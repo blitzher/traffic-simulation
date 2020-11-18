@@ -3,6 +3,7 @@
 1. semester project
 
 simon er gay
+nej nicolai er gay
 
 casper er mere gay
 <<<<<<< HEAD
