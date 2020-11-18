@@ -5,4 +5,6 @@
 simon er gay
 nej nicolai er gay
 
-jonathan er gay :DDD
+casper er mere gay
+
+jonathan er gayest
