@@ -10,3 +10,6 @@ casper er mere gay
 jonathan er gayest
 
 FUck mans
+jonathan er træls
+
+nej casper er træls
