@@ -10,3 +10,5 @@ jonathan er gay :DDD
 casper er mere gay end gayest
 
 jonathan er træls
+
+nej casper er træls
