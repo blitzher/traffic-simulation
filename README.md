@@ -8,3 +8,5 @@ casper er mere gay
 jonathan er gay :DDD
 
 casper er mere gay end gayest
+
+jonathan er træls
