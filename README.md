@@ -2,4 +2,4 @@
 
 1. semester project
 
-mighty er gay
+uglen er gay
