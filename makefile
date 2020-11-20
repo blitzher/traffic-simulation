@@ -13,6 +13,12 @@ debug : main.c
 	$(COMP) -g $(OBJS) main.c -o main_debug
 	gdb main_debug
 
+# remove all volatile files
+clear :
+	@rm -f main
+	@rm -f *.o
+	@rm -f *.exe
 
+# compile and run main
 run : main.exe
 	./main
