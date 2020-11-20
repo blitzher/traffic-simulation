@@ -3,7 +3,11 @@
 
 int main(void)
 {
-    Point a = u_new_point(0, 0);
+
+
+
+    file_reader(".config");
+    /* Point a = u_new_point(0, 0);
     Point b = u_new_point(100, 100);
     Car c = u_new_car(a, &b);
 
@@ -16,5 +20,5 @@ int main(void)
 
     printf("\nDistance between a and b: ");
     printf("%.10f\n", u_distance(a, b));
-    return 0;
+    return 0; */
 }

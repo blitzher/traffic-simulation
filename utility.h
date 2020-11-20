@@ -46,3 +46,5 @@ Car u_new_car(Point start, Point *goals);
 void u_print_point(Point);
 /* helper function for printing a car */
 void u_print_car(Car);
+
+void file_reader(char *file_name);
