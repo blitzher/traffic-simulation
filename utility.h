@@ -1,8 +1,13 @@
+#pragma once
+
 typedef unsigned int uint;
 typedef unsigned short ushort;
 
+/* arbitrary definition of maximum amount of goals */
 #define MAX_GOALS 10;
 
+/* abstract class for a point
+ * to get a new point, use u_new_point */
 typedef struct Point
 {
     uint x;
@@ -11,6 +16,8 @@ typedef struct Point
     uint visits;
 } Point;
 
+/* abstract class for a point
+ * to get a new car, use u_new_car */
 typedef struct Car
 {
     Point position;
@@ -22,16 +29,18 @@ typedef struct Car
 
 } Car;
 
-/* calculate the euclidean distance between two points */
+/* compute the distance betweeen two points
+ * more expensive than u_distance_sqr */
 double u_distance(Point, Point);
 
-/* calculate the euclidean distance squared between two points */
+/* compute the distance squared between two points
+ * less expensive than u_distance */
 double u_distance_sqr(Point, Point);
 
 /* generate a new point with default values set */
-Point u_new_point(uint, uint);
+Point u_new_point(uint x, uint y);
 /* generate a new car with default values set */
-Car u_new_car(Point, Point *);
+Car u_new_car(Point start, Point *goals);
 
 /* helper function for printing a point */
 void u_print_point(Point);

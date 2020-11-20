@@ -3,6 +3,7 @@
 #include "utility.h"
 
 /* math helper functions */
+
 double u_distance(Point a, Point b)
 {
     return sqrt(u_distance_sqr(a, b));
@@ -15,6 +16,7 @@ double u_distance_sqr(Point a, Point b)
 }
 
 /* struct initialization functions */
+
 Point u_new_point(uint x, uint y)
 {
     Point p;
@@ -36,6 +38,7 @@ Car u_new_car(Point start, Point *goals)
 }
 
 /* print helper functions */
+
 void u_print_point(Point p)
 {
     printf("< x: %d, y: %d\n", p.x, p.y);
