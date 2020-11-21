@@ -4,9 +4,9 @@
 int main(void)
 {
 
+    u_load_configs(".config", &u_configs);
+    u_print_configs(&u_configs);
 
-
-    file_reader(".config");
     /* Point a = u_new_point(0, 0);
     Point b = u_new_point(100, 100);
     Car c = u_new_car(a, &b);

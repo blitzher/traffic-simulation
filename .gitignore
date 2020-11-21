@@ -53,3 +53,5 @@ dkms.conf
 
 # Compiled main with no filetype
 main
+main_debug
+main_debug

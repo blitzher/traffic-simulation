@@ -16,8 +16,10 @@ debug : main.c
 # remove all volatile files
 clear :
 	@rm -f main
+	@rm -f main_debug
 	@rm -f *.o
 	@rm -f *.exe
+	@echo cleared files
 
 # compile and run main
 run : main.exe
