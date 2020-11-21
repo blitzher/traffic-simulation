@@ -127,8 +127,8 @@ Car u_new_car(Point *start, Point *goals)
     c.position = start;
     c.goals = goals;
     c.goal_index = 0;
-    /* todo: add support for loading default values from config */
-
+    /* load relevant information from config struct */
+    c.reaction_time = u_configs.car_reaction_time;
     return c;
 }
 
