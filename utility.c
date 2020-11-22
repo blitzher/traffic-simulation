@@ -1,20 +1,19 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-#include "utility.h"
 #include <stdlib.h>
+#include "utility.h"
 
 #define MAX_LINE_LENGTH 80
 
 Config u_configs;
 
 /* Reads a file and saves it in an array */
-void u_load_configs(char *file_name, Config *out)
+int u_load_configs(char *file_name, Config *out)
 {
     int i;
-    FILE *fr;
-    char *line = (char *)malloc(MAX_LINE_LENGTH * MAX_LINE_LENGTH);
-    size_t line_size;
+    FILE *fp;
+    char line[MAX_LINE_LENGTH];
 
     char value_string[MAX_LINE_LENGTH];
     char name[MAX_LINE_LENGTH];
@@ -22,10 +21,15 @@ void u_load_configs(char *file_name, Config *out)
     int name_end = -1;
     int value_end = -1;
 
-    fr = fopen(file_name, "r");
+    fp = fopen(file_name, "r");
+    if (fp == NULL)
+    {
+        printf("Could not open file %s", file_name);
+        return 0;
+    };
 
     /* read each line of file */
-    while (getline(&line, &line_size, fr) != EOF)
+    while (fgets(line, MAX_LINE_LENGTH, fp) != NULL)
     {
         /* reset indices to sentinel values */
         name_end = -1;
@@ -94,7 +98,8 @@ void u_load_configs(char *file_name, Config *out)
         }
     }
 
-    fclose(fr);
+    fclose(fp);
+    return 1;
 }
 /* math helper functions */
 
@@ -153,7 +158,7 @@ void u_print_configs(Config *con)
     printf("Configurations:\n");
     printf("car-max-acceleration: %f\n", con->car_acceleration);
     printf("car-initial-speed: %f\n", con->car_initial_speed);
-    printf("car-reaction-time: %d", con->car_reaction_time);
-    printf("point-free-radius: %f", con->point_free_radius);
+    printf("car-reaction-time: %d\n", con->car_reaction_time);
+    printf("point-free-radius: %f\n", con->point_free_radius);
     printf("weather: %d", con->weather);
 }

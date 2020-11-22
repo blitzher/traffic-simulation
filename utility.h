@@ -63,7 +63,7 @@ double u_distance_sqr(Point, Point);
 
 /* generate a new config with data loaded from a file
  * and output to output parameter  */
-void u_load_configs(char *file_name, Config *out);
+int u_load_configs(char *file_name, Config *out);
 /* generate a new point with default values set */
 Point u_new_point(utiny_i x, utiny_i y);
 /* generate a new car with default values set */
