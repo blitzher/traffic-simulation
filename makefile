@@ -20,6 +20,8 @@ $(BIN)/main.exe : $(SRC)/main.c $(OBJS)
 	@echo Compilation successful
 
 $(TEMP)/%.o : $(LIB)/%.c
+	
+	@mkdir -p $(TEMP) $(BIN)
 	@echo Compiling $<...
 	@$(COMP) -c $< -o $@
 

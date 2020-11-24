@@ -35,10 +35,10 @@ Point r_all_points[12];
 Point r_all_routes[12][4];
 
 /* collections of each route heading north */
-Point r_north_bound_routes[3][4];
+Point *r_north_bound_routes[3];
 /* collections of each route heading south */
-Point r_south_bound_routes[3][4];
+Point *r_south_bound_routes[3];
 /* collections of each route heading east */
-Point r_east_bound_routes[3][4];
+Point *r_east_bound_routes[3];
 /* collections of each route heading west */
-Point r_west_bound_routes[3][4];
+Point *r_west_bound_routes[3];

@@ -11,6 +11,7 @@ int main(void)
 
     /* load configs from .config file */
     u_load_configs(".config", &u_configs);
+    u_print_configs(u_configs);
 
     /* generate points and routes */
     r_generate_points();
@@ -18,6 +19,6 @@ int main(void)
 
     /* assume that the entire simulation will be run
      * within a 100x100 grid */
-
+    printf("succ\n");
     return 0;
 }

@@ -172,5 +172,5 @@ void u_print_configs(Config con)
     printf("car-initial-speed: %f\n", con.car_initial_speed);
     printf("car-reaction-time: %d\n", con.car_reaction_time);
     printf("point-free-radius: %f\n", con.point_free_radius);
-    printf("weather: %d", con.weather);
+    printf("weather: %d\n", con.weather);
 }
