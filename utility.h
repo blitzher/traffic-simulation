@@ -35,6 +35,10 @@ typedef struct Point
     utiny_i y;
     uint wait_points;
     uint visits;
+
+    /* wether or not the point has been
+     * properly initialised to a variable */
+    uint init;
 } Point;
 
 /* abstract class for a point
@@ -47,6 +51,10 @@ typedef struct Car
     double speed;
     double desired_speed;
     double reaction_time;
+
+    /* wether or not the car has been
+     * properly initialised to a variable */
+    uint init;
 
 } Car;
 
@@ -70,9 +78,11 @@ Point u_new_point(utiny_i x, utiny_i y);
 Car u_new_car(Point *start, Point *goals);
 
 /* helper function for printing a point */
-void u_print_point(Point *);
+void u_print_point(Point);
 /* helper function for printing a car */
-void u_print_car(Car *);
+void u_print_car(Car);
+/* helper function for printing a route */
+void u_print_route(Point *);
 
 /* helper function for printing configs */
-void u_print_configs(Config *);
+void u_print_configs(Config);

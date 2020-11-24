@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -ansi -pedantic -Wall
-OBJS = utility.o
+OBJS = utility.o routes.o
 COMP = $(CC) $(CFLAGS)
 
 main.exe : main.c $(OBJS)
@@ -8,6 +8,9 @@ main.exe : main.c $(OBJS)
 
 utility.o : utility.c utility.h
 	$(COMP) -c utility.c
+
+routes.o : routes.c routes.h
+	$(COMP) -c routes.c
 
 debug : main.c
 	$(COMP) -g $(OBJS) main.c -o main_debug

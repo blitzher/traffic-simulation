@@ -1,28 +1,23 @@
+/* Traffic simulation program developed by
+ * Group A404 at Aalborg University
+ * October to December 2020 */
 #include <stdio.h>
+#include "routes.h"
 #include "utility.h"
 
+/* the main entry point of the program */
 int main(void)
 {
 
-    Point a, b;
-    Car c;
-
     /* load configs from .config file */
     u_load_configs(".config", &u_configs);
-    u_print_configs(&u_configs);
 
-    a = u_new_point(0, 0);
-    b = u_new_point(100, 100);
-    c = u_new_car(&a, &b);
+    /* generate points and routes */
+    r_generate_points();
+    r_generate_routes();
 
-    printf("\nPoint a:\n");
-    u_print_point(&a);
-    printf("\nPoint b:\n");
-    u_print_point(&b);
-    printf("\nCar c:\n");
-    u_print_car(&c);
+    /* assume that the entire simulation will be run
+     * within a 100x100 grid */
 
-    printf("\nDistance between a and b: ");
-    printf("%.10f\n", u_distance(a, b));
     return 0;
 }
