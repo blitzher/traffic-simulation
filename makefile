@@ -6,37 +6,40 @@ TEMP = temp
 BIN = bin
 SRC = src
 
-# all object files, in the compiled temporary
-# directory
+# all object files, in the compiled 
+# temporary directory
 OBJS = $(TEMP)/utility.o $(TEMP)/routes.o
 
-$(BIN)/main.exe : directories $(SRC)/main.c $(OBJS) 
-	@echo compiling $(BIN)/main.exe...
+#  compiling src/main.c to bin/main.exe
+$(BIN)/main.exe : $(SRC)/main.c $(OBJS) 
+		
+	@mkdir -p $(TEMP) $(BIN)
+	@echo Compiling $(BIN)/main.exe...
+
 	@$(COMP) $(OBJS) $(SRC)/main.c -o $(BIN)/main
 	@echo Compilation successful
 
 $(TEMP)/%.o : $(LIB)/%.c
-	@echo compiling $<...
+	@echo Compiling $<...
 	@$(COMP) -c $< -o $@
 
-debug : main.c
-	$(COMP) -g $(OBJS) main.c -o main_debug
-	gdb main_debug
+# debug 
+debug : $(SRC)/main.c
+	# make directories
+	@mkdir -p $(TEMP) $(BIN)
+	$(COMP) -g $(OBJS) main.c -o $(BIN)/main_debug
+	gdb $(BIN)/main_debug
 
-# remove all volatile files
+# remove all items in temporary folders
 clear :
-	@rm -f main
-	@rm -f main_debug
-	@rm -f *.o
-	@rm -f *.exe
 	@rm -rf temp
 	@rm -rf bin
 	@echo cleared temporary files
 
-directories :
-	@mkdir -p $(TEMP)
-	@mkdir -p $(BIN)
+directories : temp bin
+	@echo making directories...
+	
 
 # compile and run main
 run : $(BIN)/main.exe
-	./main
+	@./$(BIN)/main
