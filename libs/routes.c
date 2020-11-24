@@ -22,7 +22,7 @@ void r_generate_points()
 void r_generate_routes()
 {
     int i;
-    Point route[MAX_ROUTE_LEN];
+
     /* check if all points in r_all_points are
      * properly initialised */
     for (i = 0; i < TOTAL_POINTS; i++)
@@ -34,5 +34,4 @@ void r_generate_routes()
     }
 
     /* generate routes originating from north */
-    route[0] = r_all_points[0], r_all_points[3], r_all_points[2];
 }

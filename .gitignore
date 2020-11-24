@@ -50,6 +50,8 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+bin/
+temp/
 
 # Compiled main with no filetype
 main

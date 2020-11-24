@@ -2,8 +2,8 @@
  * Group A404 at Aalborg University
  * October to December 2020 */
 #include <stdio.h>
-#include "routes.h"
-#include "utility.h"
+#include "../libs/routes.h"
+#include "../libs/utility.h"
 
 /* the main entry point of the program */
 int main(void)
