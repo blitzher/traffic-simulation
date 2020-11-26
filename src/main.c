@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include "../libs/routes.h"
 #include "../libs/utility.h"
+#include "../libs/colours.h"
+
+/* #include "../libs/colours.h" */
 
 /* the main entry point of the program */
 int main(void)
@@ -19,6 +22,6 @@ int main(void)
 
     /* assume that the entire simulation will be run
      * within a 100x100 grid */
-    printf("succ\n");
+    c_printf("success!\n", GRN);
     return 0;
 }
