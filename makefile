@@ -47,5 +47,5 @@ clear :
 clean : clear $(BIN)/main
 
 # compile and run main
-run : $(BIN)/main.exe
+run : $(BIN)/main
 	@./$(BIN)/main
