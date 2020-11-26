@@ -1,3 +1,4 @@
+# setup variables
 CC = gcc
 CFLAGS = -ansi -pedantic -Wall
 COMP = $(CC) $(CFLAGS)
@@ -8,39 +9,42 @@ SRC = src
 
 # all object files, in the compiled 
 # temporary directory
-OBJS = $(TEMP)/utility.o $(TEMP)/routes.o
+OBJS = $(TEMP)/utility.o \
+	   $(TEMP)/routes.o \
+	   $(TEMP)/colours.o
 
-#  compiling src/main.c to bin/main.exe
-$(BIN)/main.exe : $(SRC)/main.c $(OBJS) 
+# compiling src/main.c to bin/main
+$(BIN)/main : $(SRC)/main.c $(OBJS) 
 		
 	@mkdir -p $(TEMP) $(BIN)
 	@echo Compiling $(BIN)/main.exe...
 
 	@$(COMP) $(OBJS) $(SRC)/main.c -o $(BIN)/main
+	@echo
 	@echo Compilation successful
 
+# general rule for compiling any library files
 $(TEMP)/%.o : $(LIB)/%.c
-	
 	@mkdir -p $(TEMP) $(BIN)
 	@echo Compiling $<...
 	@$(COMP) -c $< -o $@
 
-# debug 
+# compile with debug flag, and run gdb
 debug : $(SRC)/main.c
-	# make directories
 	@mkdir -p $(TEMP) $(BIN)
-	$(COMP) -g $(OBJS) main.c -o $(BIN)/main_debug
+	$(COMP) -g $(OBJS) $(SRC)/main.c -o $(BIN)/main_debug
 	gdb $(BIN)/main_debug
 
 # remove all items in temporary folders
 clear :
 	@rm -rf temp
 	@rm -rf bin
+	@rm -f *.exe
+	@rm -f *.o
 	@echo cleared temporary files
 
-directories : temp bin
-	@echo making directories...
-	
+# clear, then make
+clean : clear $(BIN)/main
 
 # compile and run main
 run : $(BIN)/main.exe
