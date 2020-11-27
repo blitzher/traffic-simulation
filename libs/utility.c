@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "utility.h"
+#include "vector.h"
 
 #define MAX_LINE_LENGTH 80
 
@@ -173,4 +174,9 @@ void u_print_configs(Config con)
     printf("car-reaction-time: %d\n", con.car_reaction_time);
     printf("point-free-radius: %f\n", con.point_free_radius);
     printf("weather: %d\n", con.weather);
+}
+void v_print_crossproduct(Vector vec_a, Vector vec_b)
+{
+
+    printf("The vectors %s, parallel \n", v_check_if_parallel(vec_a, vec_b) ? "is" : "is not");
 }

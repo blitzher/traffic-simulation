@@ -11,7 +11,8 @@ SRC = src
 # temporary directory
 OBJS = $(TEMP)/utility.o \
 	   $(TEMP)/routes.o \
-	   $(TEMP)/colours.o
+	   $(TEMP)/colours.o \
+	   $(TEMP)/vector.o
 
 # compiling src/main.c to bin/main
 $(BIN)/main : $(SRC)/main.c $(OBJS) 

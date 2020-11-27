@@ -22,7 +22,6 @@ typedef struct Config
     double car_initial_speed;
 
     double point_free_radius;
-
     utiny_i weather;
 
 } Config;
@@ -86,3 +85,6 @@ void u_print_route(Point *);
 
 /* helper function for printing configs */
 void u_print_configs(Config);
+
+/* Print function for vector */
+void v_print_crossproduct(Vector, Vector);
