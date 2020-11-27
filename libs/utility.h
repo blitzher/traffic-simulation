@@ -1,5 +1,6 @@
 #pragma once
-
+#include "vector.h"
+#include <stdio.h>
 /* define shorthands for
  * unsigned int
  * unsigned short
