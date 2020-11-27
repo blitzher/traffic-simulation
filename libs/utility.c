@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "utility.h"
+#include "routes.h"
 
 #define MAX_LINE_LENGTH 80
 
@@ -161,8 +162,11 @@ void u_print_car(Car c)
 
 void u_print_route(Point *route)
 {
-    /* TODO: implement */
-    return;
+    utiny_i i;
+    for (i = 0; i < MAX_ROUTE_LEN; i++)
+    {
+        u_print_point(route[i]);
+    }
 }
 
 void u_print_configs(Config con)

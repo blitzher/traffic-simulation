@@ -13,13 +13,13 @@ OBJS = $(TEMP)/utility.o \
 	   $(TEMP)/routes.o \
 	   $(TEMP)/colours.o
 
-# compiling src/main.c to bin/main
-$(BIN)/main : $(SRC)/main.c $(OBJS) 
+# compiling src/car.c to bin/car
+$(BIN)/car : $(SRC)/car.c $(OBJS) 
 		
 	@mkdir -p $(TEMP) $(BIN)
-	@echo Compiling $(BIN)/main.exe...
+	@echo Compiling $(BIN)/car.exe...
 
-	@$(COMP) $(OBJS) $(SRC)/main.c -o $(BIN)/main
+	@$(COMP) $(OBJS) $(SRC)/car.c -o $(BIN)/car
 	@echo
 	@echo Compilation successful
 
@@ -30,10 +30,10 @@ $(TEMP)/%.o : $(LIB)/%.c
 	@$(COMP) -c $< -o $@
 
 # compile with debug flag, and run gdb
-debug : $(SRC)/main.c
+debug : $(SRC)/car.c
 	@mkdir -p $(TEMP) $(BIN)
-	$(COMP) -g $(OBJS) $(SRC)/main.c -o $(BIN)/main_debug
-	gdb $(BIN)/main_debug
+	$(COMP) -g $(OBJS) $(SRC)/car.c -o $(BIN)/car_debug
+	gdb $(BIN)/car_debug
 
 # remove all items in temporary folders
 clear :
@@ -44,8 +44,8 @@ clear :
 	@echo cleared temporary files
 
 # clear, then make
-clean : clear $(BIN)/main
+clean : clear $(BIN)/car
 
-# compile and run main
-run : $(BIN)/main
-	@./$(BIN)/main
+# compile and run car
+run : $(BIN)/car
+	@./$(BIN)/car
