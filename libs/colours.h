@@ -1,7 +1,8 @@
-/*
+/* 
  * This is free and unencumbered software released into the public domain.
  *
  * For more information, please refer to <https://unlicense.org>
+ * https://gist.github.com/RabaDabaDoba/145049536f815903c79944599c6f952a
  */
 #pragma once
 
