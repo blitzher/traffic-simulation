@@ -194,5 +194,5 @@ int u_compile_output(FILE *output_file)
 void u_print_crossproduct(Vector vec_a, Vector vec_b)
 {
 
-    printf("The vectors %s, parallel \n", v_check_if_parallel(vec_a, vec_b) ? "is" : "is not");
+    printf("The vectors %s, parallel \n", u_check_if_parallel(vec_a, vec_b) ? "is" : "is not");
 }
