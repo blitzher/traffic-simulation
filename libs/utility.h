@@ -86,3 +86,6 @@ void u_print_route(Point *);
 
 /* helper function for printing configs */
 void u_print_configs(Config);
+/* compile information from point variables into
+ * an output file  */
+int u_compile_output(FILE *output_file);
