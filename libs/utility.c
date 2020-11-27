@@ -4,12 +4,89 @@
 #include <stdlib.h>
 #include "utility.h"
 #include "routes.h"
+#include "vector.h"
 
 #define MAX_LINE_LENGTH 80
 
 Config u_configs;
 
-/* Reads a file and saves it in an array */
+/* math helper functions */
+
+double u_distance(Point a, Point b)
+{
+    return sqrt(u_distance_sqr(a, b));
+}
+
+double u_distance_sqr(Point a, Point b)
+{
+    double dist_sqr = pow(b.y - a.y, 2) + pow(b.x - a.x, 2);
+    return dist_sqr;
+}
+
+/* struct initialization functions */
+
+Point u_new_point(utiny_i x, utiny_i y)
+{
+    Point p;
+    p.x = x;
+    p.y = y;
+    p.wait_points = 0;
+    p.visits = 0;
+
+    /* has been properly initialised */
+    p.init = 1;
+    return p;
+}
+
+Car u_new_car(Point *start, Point *goals)
+{
+    Car c;
+    c.position = start;
+    c.goals = goals;
+    c.goal_index = 0;
+    /* load relevant information from config struct */
+    c.reaction_time = u_configs.car_reaction_time;
+
+    /* has been properly initialised */
+    c.init = 1;
+    return c;
+}
+
+/* print helper functions */
+
+void u_print_point(Point p)
+{
+    printf("< x: %d, y: %d\n", p.x, p.y);
+    printf("  wait_points: %d, visits: %d >\n", p.wait_points, p.visits);
+}
+
+void u_print_car(Car c)
+{
+    printf("Position:\n");
+    u_print_point(*c.position);
+    printf("Current goal:\n");
+    u_print_point(c.goals[c.goal_index]);
+}
+
+void u_print_route(Point *route)
+{
+    utiny_i i;
+    for (i = 0; i < MAX_ROUTE_LEN; i++)
+    {
+        u_print_point(route[i]);
+    }
+}
+
+void u_print_configs(Config con)
+{
+    printf("Configurations:\n");
+    printf("car-max-acceleration: %f\n", con.car_acceleration);
+    printf("car-initial-speed: %f\n", con.car_initial_speed);
+    printf("car-reaction-time: %d\n", con.car_reaction_time);
+    printf("point-free-radius: %f\n", con.point_free_radius);
+    printf("weather: %d\n", con.weather);
+}
+
 int u_load_configs(char *file_name, Config *out)
 {
     int i;
@@ -102,79 +179,23 @@ int u_load_configs(char *file_name, Config *out)
     fclose(fp);
     return 1;
 }
-/* math helper functions */
 
-double u_distance(Point a, Point b)
+int u_compile_output(FILE *output_file)
 {
-    return sqrt(u_distance_sqr(a, b));
-}
+    int i;
+    Point *cur_point;
+    uint total_wait;
 
-double u_distance_sqr(Point a, Point b)
-{
-    double dist_sqr = pow(b.y - a.y, 2) + pow(b.x - a.x, 2);
-    return dist_sqr;
-}
+    /* iterate over all points */
 
-/* struct initialization functions */
-
-Point u_new_point(utiny_i x, utiny_i y)
-{
-    Point p;
-    p.x = x;
-    p.y = y;
-    p.wait_points = 0;
-    p.visits = 0;
-
-    /* has been properly initialised */
-    p.init = 1;
-    return p;
-}
-
-Car u_new_car(Point *start, Point *goals)
-{
-    Car c;
-    c.position = start;
-    c.goals = goals;
-    c.goal_index = 0;
-    /* load relevant information from config struct */
-    c.reaction_time = u_configs.car_reaction_time;
-
-    /* has been properly initialised */
-    c.init = 1;
-    return c;
-}
-
-/* print helper functions */
-
-void u_print_point(Point p)
-{
-    printf("< x: %d, y: %d\n", p.x, p.y);
-    printf("  wait_points: %d, visits: %d >\n", p.wait_points, p.visits);
-}
-
-void u_print_car(Car c)
-{
-    printf("Position:\n");
-    u_print_point(*c.position);
-    printf("Current goal:\n");
-    u_print_point(c.goals[c.goal_index]);
-}
-
-void u_print_route(Point *route)
-{
-    utiny_i i;
-    for (i = 0; i < MAX_ROUTE_LEN; i++)
+    for (i = 0; i < TOTAL_POINTS; i++)
     {
-        u_print_point(route[i]);
+        cur_point = &r_all_points[i];
+        total_wait += cur_point->wait_points;
     }
 }
-
-void u_print_configs(Config con)
+void u_print_crossproduct(Vector vec_a, Vector vec_b)
 {
-    printf("Configurations:\n");
-    printf("car-max-acceleration: %f\n", con.car_acceleration);
-    printf("car-initial-speed: %f\n", con.car_initial_speed);
-    printf("car-reaction-time: %d\n", con.car_reaction_time);
-    printf("point-free-radius: %f\n", con.point_free_radius);
-    printf("weather: %d\n", con.weather);
+
+    printf("The vectors %s, parallel \n", u_check_if_parallel(vec_a, vec_b) ? "is" : "is not");
 }
