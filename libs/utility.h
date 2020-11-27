@@ -22,7 +22,6 @@ typedef struct Config
     double car_initial_speed;
 
     double point_free_radius;
-
     utiny_i weather;
 
 } Config;
@@ -89,3 +88,6 @@ void u_print_configs(Config);
 /* compile information from point variables into
  * an output file  */
 int u_compile_output(FILE *output_file);
+
+/* Print function for vector */
+void u_print_crossproduct(Vector, Vector);

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "utility.h"
 #include "routes.h"
+#include "vector.h"
 
 #define MAX_LINE_LENGTH 80
 
@@ -189,4 +190,9 @@ int u_compile_output(FILE *output_file)
         cur_point = &r_all_points[i];
         total_wait += cur_point->wait_points;
     }
+}
+void u_print_crossproduct(Vector vec_a, Vector vec_b)
+{
+
+    printf("The vectors %s, parallel \n", v_check_if_parallel(vec_a, vec_b) ? "is" : "is not");
 }
