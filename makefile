@@ -15,13 +15,13 @@ OBJS = $(TEMP)/utility.o \
 	   $(TEMP)/vector.o
 
 
-# compiling src/car.c to bin/car
-$(BIN)/car : $(SRC)/car.c $(OBJS) 
+# compiling src/main.c to bin/main
+$(BIN)/main : $(SRC)/main.c $(OBJS) 
 		
 	@mkdir -p $(TEMP) $(BIN)
 	@echo Compiling $(BIN)/car.exe...
 
-	@$(COMP) $(OBJS) $(SRC)/car.c -o $(BIN)/car
+	@$(COMP) $(OBJS) $(SRC)/main.c -o $(BIN)/main
 	@echo
 	@echo Compilation successful
 
@@ -32,10 +32,10 @@ $(TEMP)/%.o : $(LIB)/%.c
 	@$(COMP) -c $< -o $@
 
 # compile with debug flag, and run gdb
-debug : $(SRC)/car.c
+debug : $(SRC)/main.c
 	@mkdir -p $(TEMP) $(BIN)
-	$(COMP) -g $(OBJS) $(SRC)/car.c -o $(BIN)/car_debug
-	gdb $(BIN)/car_debug
+	$(COMP) -g $(OBJS) $(SRC)/main.c -o $(BIN)/main_debug
+	gdb $(BIN)/main_debug
 
 # remove all items in temporary folders
 clear :
@@ -46,8 +46,8 @@ clear :
 	@echo cleared temporary files
 
 # clear, then make
-clean : clear $(BIN)/car
+clean : clear $(BIN)/main
 
-# compile and run car
-run : $(BIN)/car
-	@./$(BIN)/car
+# compile and run main
+run : $(BIN)/main
+	@./$(BIN)/main
