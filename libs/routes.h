@@ -27,18 +27,13 @@ void r_generate_routes();
 
 /* collection of all points, 
  * sorted from top left to bottom right */
-Point r_all_points[12];
-
-/* collection of all routes,
- * sorted by origin location,
- * north, south, east, west */
-Point r_all_routes[12][4];
+Point r_all_points[TOTAL_POINTS];
 
 /* collections of each route heading north */
-Point *r_north_bound_routes[3];
+Point *r_north_bound_routes[MAX_ROUTE_LEN];
 /* collections of each route heading south */
-Point *r_south_bound_routes[3];
+Point *r_south_bound_routes[MAX_ROUTE_LEN];
 /* collections of each route heading east */
-Point *r_east_bound_routes[3];
+Point *r_east_bound_routes[MAX_ROUTE_LEN];
 /* collections of each route heading west */
-Point *r_west_bound_routes[3];
+Point *r_west_bound_routes[MAX_ROUTE_LEN];

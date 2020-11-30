@@ -54,26 +54,27 @@ Car u_new_car(Point *start, Point *goals)
 
 /* print helper functions */
 
-void u_print_point(Point p)
+void u_print_point(Point *p)
 {
-    printf("< x: %d, y: %d\n", p.x, p.y);
-    printf("  wait_points: %d, visits: %d >\n", p.wait_points, p.visits);
+    printf("< x: %d, y: %d\n", p->x, p->y);
+    printf("  wait_points: %d, visits: %d >\n", p->wait_points, p->visits);
 }
 
 void u_print_car(Car c)
 {
     printf("Position:\n");
-    u_print_point(*c.position);
+    u_print_point(c.position);
     printf("Current goal:\n");
-    u_print_point(c.goals[c.goal_index]);
+    u_print_point(&c.goals[c.goal_index]);
 }
 
 void u_print_route(Point *route)
 {
     utiny_i i;
-    for (i = 0; i < MAX_ROUTE_LEN; i++)
+
+    for (i = 0; i < MAX_ROUTE_LEN && route[i].init == 1; i++)
     {
-        u_print_point(route[i]);
+        u_print_point(&route[i]);
     }
 }
 
@@ -85,6 +86,7 @@ void u_print_configs(Config con)
     printf("car-reaction-time: %d\n", con.car_reaction_time);
     printf("point-free-radius: %f\n", con.point_free_radius);
     printf("weather: %d\n", con.weather);
+    printf("sim-duration: %d\n", con.sim_duration);
 }
 
 int u_load_configs(char *file_name, Config *out)
@@ -168,6 +170,10 @@ int u_load_configs(char *file_name, Config *out)
             else if (strcmp(name, "weather") == 0)
             {
                 out->weather = atoi(value_string);
+            }
+            else if (strcmp(name, "sim-duration") == 0)
+            {
+                out->sim_duration = atoi(value_string);
             }
             else
             {
