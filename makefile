@@ -14,14 +14,12 @@ OBJS = $(TEMP)/utility.o \
 	   $(TEMP)/colours.o \
 	   $(TEMP)/vector.o
 
-
-# compiling src/main.c to bin/main
-$(BIN)/main : $(SRC)/main.c $(OBJS) 
+% : $(SRC)/%.c $(OBJS)
 		
 	@mkdir -p $(TEMP) $(BIN)
-	@echo Compiling $(BIN)/car.exe...
+	@echo Compiling $<...
 
-	@$(COMP) $(OBJS) $(SRC)/main.c -o $(BIN)/main
+	@$(COMP) $(OBJS) $< -o $(BIN)/$@
 	@echo
 	@echo Compilation successful
 
@@ -30,6 +28,10 @@ $(TEMP)/%.o : $(LIB)/%.c
 	@mkdir -p $(TEMP) $(BIN)
 	@echo Compiling $<...
 	@$(COMP) -c $< -o $@
+
+# don't remove objs when compiling by
+# implicit rules
+.PRECIOUS : $(OBJS)
 
 # compile with debug flag, and run gdb
 debug : $(SRC)/main.c
