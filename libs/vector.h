@@ -9,8 +9,19 @@ typedef struct Vector
     double length;
 } Vector;
 
-/* Function to calculate the crossproduct of 2 vectors */
+
+/* generate a new vector from two coordinates */
+Vector v_new_vector(int x, int y);
+
+/* compute the dot product between two vectors  */
+double v_dotp(Vector vec_a, Vector vec_b);
+
+/* calculate the crossproduct of 2 vectors */
 double v_crossproduct(Vector vec_a, Vector vec_b);
-/* Function to check if 2 vectors are paralel by checking if 
-the crossproduct is either 0 or something else */
+
+/* compute the angle between two vectors */
+double v_angle_between(Vector vec_a, Vector vec_b);
+
+/* check if 2 vectors are paralel by checking if 
+ * the crossproduct is either 0 or something else */
 double v_check_if_parallel(Vector vec_a, Vector vec_b);

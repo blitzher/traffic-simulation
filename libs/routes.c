@@ -1,11 +1,14 @@
 #include "utility.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include "routes.h"
 
-Point *r_north_bound_routes[3];
-Point *r_south_bound_routes[3];
-Point *r_east_bound_routes[3];
-Point *r_west_bound_routes[3];
+Point *alloc_route(utiny_i size);
+
+Point *r_north_bound_routes[4];
+Point *r_south_bound_routes[4];
+Point *r_east_bound_routes[4];
+Point *r_west_bound_routes[4];
 
 /* generates the points in the xy coordinate
  * space, and adds them to r_all_points */
@@ -28,19 +31,20 @@ void r_generate_points()
 /* TODO: find a better way to do this */
 void r_generate_routes()
 {
-
-    Point west_to_north[4];
-    Point south_to_north[4];
-    Point east_to_north[4];
-    Point west_to_south[4];
-    Point east_to_south[4];
-    Point north_to_south[4];
-    Point south_to_east[4];
-    Point north_to_east[4];
-    Point west_to_east[4];
-    Point north_to_west[4];
-    Point east_to_west[4];
-    Point south_to_west[4];
+    /* thanks to Peter Frandsen, for debugging this
+     * PoS code :) */
+    Point *west_to_north = alloc_route(4);
+    Point *south_to_north = alloc_route(4);
+    Point *east_to_north = alloc_route(4);
+    Point *west_to_south = alloc_route(4);
+    Point *east_to_south = alloc_route(4);
+    Point *north_to_south = alloc_route(4);
+    Point *south_to_east = alloc_route(4);
+    Point *north_to_east = alloc_route(4);
+    Point *west_to_east = alloc_route(4);
+    Point *north_to_west = alloc_route(4);
+    Point *east_to_west = alloc_route(4);
+    Point *south_to_west = alloc_route(4);
 
     west_to_north[0] = r_all_points[6];
     west_to_north[1] = r_all_points[7];
@@ -105,4 +109,10 @@ void r_generate_routes()
     r_west_bound_routes[1] = south_to_west;
     r_west_bound_routes[2] = east_to_west;
     printf("assembled routes...\n");
+}
+
+/* internal route allocation function */
+Point *alloc_route(utiny_i size)
+{
+    return (Point *)malloc(sizeof(Point) * size);
 }

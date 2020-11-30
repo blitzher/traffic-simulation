@@ -12,7 +12,8 @@ SRC = src
 OBJS = $(TEMP)/utility.o \
 	   $(TEMP)/routes.o \
 	   $(TEMP)/colours.o \
-	   $(TEMP)/vector.o
+	   $(TEMP)/vector.o \
+	   $(TEMP)/simulation.o
 
 % : $(SRC)/%.c $(OBJS)
 		
@@ -48,8 +49,8 @@ clear :
 	@echo cleared temporary files
 
 # clear, then make
-clean : clear $(BIN)/main
+clean : clear main
 
 # compile and run main
-run : $(BIN)/main
-	@./$(BIN)/main
+run : car
+	@./$(BIN)/car

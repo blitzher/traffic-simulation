@@ -25,6 +25,8 @@ typedef struct Config
     double point_free_radius;
     utiny_i weather;
 
+    int sim_duration;
+
 } Config;
 
 /* abstract class for a point
@@ -78,7 +80,7 @@ Point u_new_point(utiny_i x, utiny_i y);
 Car u_new_car(Point *start, Point *goals);
 
 /* helper function for printing a point */
-void u_print_point(Point);
+void u_print_point(Point*);
 /* helper function for printing a car */
 void u_print_car(Car);
 /* helper function for printing a route */
