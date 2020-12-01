@@ -117,8 +117,9 @@ utiny_i on_last_goal(Car *c)
 
 /* internal helper function for sim */
 /* TODO: implement */
-utiny_i need_more_cars()
+utiny_i need_more_cars(uint car, )
 {
+
     return 1;
 }
 

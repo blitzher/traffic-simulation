@@ -1,22 +1,18 @@
-
 # sim initiation
 
-do we need more cars?
-if yes:
-    spawn them
-    find empty space in all_vehicles
-    assign routes to new cars
+need more cars
 
-for each car:
+total time / expected vehicles = time for spawn
+spawn = time for spawn
 
-    move car towards goal
-    check for going-to-be collision
+How far are we in sim? - Current time - Total time
 
-    if it is near a goal:
-        goal.visits++;
+Current cars
+Total cars
 
-        check if its final goal
-        if yes:
-            set car.init = 0
-        else:
-            set next goal to current goal
+    - how many cars have we summoned
+        -
+
+
+    - how many do we need
+        - config file

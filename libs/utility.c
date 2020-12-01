@@ -8,17 +8,16 @@
 
 #define MAX_LINE_LENGTH 80
 
-
 Config u_configs;
 
 /* math helper functions */
 
-double u_distance(Point a, Point b)
+double u_distance(Vector a, Vector b)
 {
     return sqrt(u_distance_sqr(a, b));
 }
 
-double u_distance_sqr(Point a, Point b)
+double u_distance_sqr(Vector a, Vector b)
 {
     double dist_sqr = pow(b.y - a.y, 2) + pow(b.x - a.x, 2);
     return dist_sqr;
@@ -42,7 +41,8 @@ Point u_new_point(utiny_i x, utiny_i y)
 Car u_new_car(Point *start, Point *goals)
 {
     Car c;
-    c.position = start;
+    Vector c_position = v_from_point(*start);
+    c.position = &c_position;
     c.goals = goals;
     c.goal_index = 0;
     /* load relevant information from config struct */
@@ -64,7 +64,7 @@ void u_print_point(Point *p)
 void u_print_car(Car c)
 {
     printf("Position:\n");
-    u_print_point(c.position);
+    /* TODO: Print position of car as a Vector */
     printf("Current goal:\n");
     u_print_point(&c.goals[c.goal_index]);
 }
@@ -163,6 +163,10 @@ int u_load_configs(char *file_name, Config *out)
             else if (strcmp(name, "car-reaction-time") == 0)
             {
                 out->car_reaction_time = atoi(value_string);
+            }
+            else if (strcmp(name, "car-total-amount") == 0)
+            {
+                out->car_total_amount = atoi(value_string);
             }
             else if (strcmp(name, "point-free-radius") == 0)
             {

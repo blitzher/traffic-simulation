@@ -22,6 +22,7 @@ typedef struct Config
     double car_acceleration;
     utiny_i car_reaction_time;
     double car_initial_speed;
+    uint car_total_amount;
 
     double point_free_radius;
     utiny_i weather;
@@ -81,11 +82,13 @@ Point u_new_point(utiny_i x, utiny_i y);
 Car u_new_car(Point *start, Point *goals);
 
 /* helper function for printing a point */
-void u_print_point(Point*);
+void u_print_point(Point *);
 /* helper function for printing a car */
 void u_print_car(Car);
 /* helper function for printing a route */
 void u_print_route(Point *);
+/* helper function for printing a vector */
+void u_print_vector(Vector *);
 
 /* helper function for printing configs */
 void u_print_configs(Config);
