@@ -11,6 +11,7 @@ typedef unsigned char utiny_i;
 
 /* arbitrary definition of maximum amount of goals */
 #define MAX_GOALS 10;
+#define DEBUG 1
 
 /* abstract struct for configurations
  * to get configurations, use u_load_config
@@ -47,7 +48,7 @@ typedef struct Point
  * to get a new car, use u_new_car */
 typedef struct Car
 {
-    Point *position;
+    Vector *position;
     Point *goals;
     utiny_i goal_index;
     double speed;
@@ -56,7 +57,7 @@ typedef struct Car
 
     /* wether or not the car has been
      * properly initialised to a variable */
-    uint init;
+    utiny_i init;
 
 } Car;
 
@@ -65,11 +66,11 @@ Config u_configs;
 
 /* compute the distance betweeen two points
  * more expensive than u_distance_sqr */
-double u_distance(Point, Point);
+double u_distance(Vector, Vector);
 
 /* compute the distance squared between two points
  * less expensive than u_distance */
-double u_distance_sqr(Point, Point);
+double u_distance_sqr(Vector, Vector);
 
 /* generate a new config with data loaded from a file
  * and output to output parameter  */

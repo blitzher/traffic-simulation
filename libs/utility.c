@@ -8,6 +8,7 @@
 
 #define MAX_LINE_LENGTH 80
 
+
 Config u_configs;
 
 /* math helper functions */

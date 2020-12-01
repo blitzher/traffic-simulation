@@ -35,9 +35,9 @@ $(TEMP)/%.o : $(LIB)/%.c
 .PRECIOUS : $(OBJS)
 
 # compile with debug flag, and run gdb
-debug : $(SRC)/main.c
+debug : car
 	@mkdir -p $(TEMP) $(BIN)
-	$(COMP) -g $(OBJS) $(SRC)/main.c -o $(BIN)/main_debug
+	$(COMP) -g $(OBJS) $(SRC)/car.c -o $(BIN)/main_debug
 	gdb $(BIN)/main_debug
 
 # remove all items in temporary folders
