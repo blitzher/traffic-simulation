@@ -11,7 +11,7 @@ uint count_cars(Car *cars);
 void s_run_simulation(Config config)
 {
     int time;
-    int i;
+    int i, j;
     Point *start;
     Point *goals;
 
@@ -30,7 +30,7 @@ void s_run_simulation(Config config)
 
         if (need_more_cars())
         {
-            /* TODO: Make dynmaic route system */
+            /* TODO: Make dynamic route system */
             goals = r_north_bound_routes[2];
             start = &goals[0];
 
@@ -51,7 +51,15 @@ void s_run_simulation(Config config)
             /* if car is dead, go to next car */
             if (all_vehicles[i].init != 1)
             {
-                /* TODO: find next non-dead car instead of going through all */
+                /* Doesn't serve purpose but good practice wpgg*/
+                for (j = i; j < MAX_VEHICLES; j++)
+                {
+                    if (all_vehicles[j].init == 1)
+                    {
+                        break;
+                    }
+                }
+                i = j;
                 continue;
             }
 
@@ -61,8 +69,11 @@ void s_run_simulation(Config config)
             move_car_toward_goal(&all_vehicles[i]);
             /* TODO: Check for collision */
 
-            /* TODO: Check if car is standing still 
-             * and sort out current_goal.wait_points */
+            /* Checking speed under 1, standstill occurs and increment wait_points. */
+            if (current_car->speed < 1)
+            {
+                current_goal->wait_points++;
+            }
 
             /* if car is adequately close to its current goal */
             if (u_distance_sqr(*current_car->position, v_from_point(*current_goal)) < 2)
