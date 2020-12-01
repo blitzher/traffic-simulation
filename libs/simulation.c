@@ -18,17 +18,18 @@ void s_run_simulation(Config config)
     Car *current_car;
     Point *current_goal;
 
+    uint cars_spawned = 0;
     Car *all_vehicles = (Car *)malloc(sizeof(Car) * MAX_VEHICLES);
 
     u_print_configs(config);
-    printf("\nrunning simulation...\n");
+    printf("\nrunning simulation...\n\n");
 
     /* run the simulation  */
     for (time = 0; time < config.sim_duration; time++)
     {
-        /* if (DEBUG) { printf("time = %d\n", time); } */
 
-        if (need_more_cars())
+        if (need_more_cars(cars_spawned, config.car_total_amount,
+                           time, config.sim_duration))
         {
             /* TODO: Make dynamic route system */
             goals = r_north_bound_routes[2];
@@ -39,6 +40,7 @@ void s_run_simulation(Config config)
                 if (all_vehicles[i].init == 0)
                 {
                     all_vehicles[i] = u_new_car(start, goals);
+                    cars_spawned++;
                     break;
                 }
             }
@@ -116,11 +118,13 @@ utiny_i on_last_goal(Car *c)
 }
 
 /* internal helper function for sim */
-/* TODO: implement */
-utiny_i need_more_cars(uint car, )
+utiny_i need_more_cars(uint curr_veh, uint total_veh,
+                       uint curr_time, uint total_time)
 {
+    float time_per_car = (float)total_time/(float)total_veh;
+    float veh_time = (float)curr_veh * time_per_car;
 
-    return 1;
+    return curr_time > veh_time;
 }
 
 /* internal helper function for sim */

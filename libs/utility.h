@@ -1,5 +1,6 @@
 #pragma once
-#include "vector.h"
+
+
 #include <stdio.h>
 /* define shorthands for
  * unsigned int
@@ -47,6 +48,10 @@ typedef struct Point
 
 /* abstract class for a point
  * to get a new car, use u_new_car */
+
+/* include vector struct for car */
+#include "vector.h"
+
 typedef struct Car
 {
     Vector *position;
@@ -61,6 +66,8 @@ typedef struct Car
     utiny_i init;
 
 } Car;
+
+
 
 /* global config variable */
 Config u_configs;

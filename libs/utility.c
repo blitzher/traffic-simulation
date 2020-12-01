@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include "utility.h"
 #include "routes.h"
-#include "vector.h"
 
 #define MAX_LINE_LENGTH 80
 

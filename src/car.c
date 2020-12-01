@@ -14,5 +14,7 @@ int main(void)
 
     s_run_simulation(u_configs);
 
+    c_printf("simulation terminated succesfully\n", BLU);
+
     return 0;
 }

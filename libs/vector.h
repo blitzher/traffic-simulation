@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdio.h>
+#include <math.h>
+
 /* Struct of a vector consisting of an x and y coordinate,
  as well as the length of the vector */
 typedef struct Vector
@@ -26,18 +29,16 @@ double v_angle_between(Vector vec_a, Vector vec_b);
 double v_check_if_parallel(Vector vec_a, Vector vec_b);
 /* Calculate the length of a vector */
 double v_magnitude(Vector);
+
 /* return a vector of same direction, but with length 1 */
-/* TODO: implement */
 Vector v_normalize(Vector);
 
 /* adds two vectors, and return their sum */
-/* TODO: implement */
 Vector v_add(Vector, Vector);
 
 /* scale a vector by a number, and return the resulting vector */
-/* TODO: implement */
 Vector v_scale(Vector, double);
 
+#include "utility.h"
 /* return a vector from a point */
-/* TODO: implement */
 Vector v_from_point(Point);

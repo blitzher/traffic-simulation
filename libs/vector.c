@@ -1,8 +1,17 @@
+#include "vector.h"
+
 #include <stdio.h>
 #include <math.h>
-#include "vector.h"
 #include "colours.h"
 #include "utility.h"
+
+Vector v_new_vector(double x, double y) {
+    Vector out;
+    out.x = x;
+    out.y = y;
+
+    return out;
+}
 
 double v_check_if_parallel(Vector vec_a, Vector vec_b)
 {

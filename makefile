@@ -1,6 +1,6 @@
 # setup variables
 CC = gcc
-CFLAGS = -ansi -pedantic -Wall
+CFLAGS = 
 COMP = $(CC) $(CFLAGS)
 LIB = libs
 TEMP = temp
@@ -25,7 +25,7 @@ OBJS = $(TEMP)/utility.o \
 	@echo Compilation successful
 
 # general rule for compiling any library files
-$(TEMP)/%.o : $(LIB)/%.c
+$(TEMP)/%.o : $(LIB)/%.c $(LIB)/%.h
 	@mkdir -p $(TEMP) $(BIN)
 	@echo Compiling $<...
 	@$(COMP) -c $< -o $@
@@ -49,7 +49,7 @@ clear :
 	@echo cleared temporary files
 
 # clear, then make
-clean : clear main
+clean : clear car
 
 # compile and run main
 run : car
