@@ -9,7 +9,6 @@ typedef struct Vector
     double length;
 } Vector;
 
-
 /* generate a new vector from two coordinates */
 Vector v_new_vector(double x, double y);
 
@@ -25,7 +24,8 @@ double v_angle_between(Vector vec_a, Vector vec_b);
 /* check if 2 vectors are paralel by checking if 
  * the crossproduct is either 0 or something else */
 double v_check_if_parallel(Vector vec_a, Vector vec_b);
-
+/* Calculate the length of a vector */
+double v_magnitude(Vector);
 /* return a vector of same direction, but with length 1 */
 /* TODO: implement */
 Vector v_normalize(Vector);
