@@ -1,7 +1,6 @@
 /* Traffic simulation program developed by
  * Group A404 at Aalborg University
  * October to December 2020 */
-#include <stdio.h>
 #include "../libs/routes.h"
 #include "../libs/utility.h"
 #include "../libs/colours.h"
@@ -11,7 +10,7 @@
 /* the main entry point of the program */
 int main(void)
 {
-
+    srand(time(NULL));
     /* load configs from .config file */
     u_load_configs(".config", &u_configs);
     u_print_configs(u_configs);

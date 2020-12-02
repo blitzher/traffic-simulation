@@ -37,3 +37,9 @@ Point *r_south_bound_routes[MAX_ROUTE_LEN];
 Point *r_east_bound_routes[MAX_ROUTE_LEN];
 /* collections of each route heading west */
 Point *r_west_bound_routes[MAX_ROUTE_LEN];
+
+/* pick a random route among all, unbiased */
+Point *r_random_route();
+
+/* get a point by its (i, j) index */
+Point r_point_by_index(uint i);

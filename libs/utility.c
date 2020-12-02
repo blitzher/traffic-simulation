@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
@@ -47,7 +48,7 @@ Car u_new_car(Point *goals)
     c.goal_index = 1;
     /* load relevant information from config struct */
     c.reaction_time = u_configs.car_reaction_time;
-    c.speed = 50/3.6;
+    c.speed = 2;
     /* has been properly initialised */
     c.init = 1;
     return c;
@@ -55,6 +56,7 @@ Car u_new_car(Point *goals)
 
 /* print helper functions */
 
+/* TODO: print as a coordinate in north/south/east/west space instead */
 void u_print_point(Point *p)
 {
     printf("< x: %d, y: %d\n", p->x, p->y);
@@ -195,21 +197,26 @@ int u_load_configs(char *file_name, Config *out)
     return 1;
 }
 
-int u_compile_output(FILE *output_file)
+int u_compile_output(char *output_file)
 {
-    int i;
-    Point *cur_point;
-    uint total_wait;
+    uint i;
+    FILE *fp;
+    Point point;
+    char line[80];
 
+    fp = fopen(output_file, "w");
     /* iterate over all points */
-
     for (i = 0; i < TOTAL_POINTS; i++)
     {
-        cur_point = &r_all_points[i];
-        total_wait += cur_point->wait_points;
+        point = r_point_by_index(i);
+        sprintf(line, "<x:%3d, y:%3d - visits:%3d, wait_points:%3d\n",
+        point.x, point.y, point.visits, point.wait_points);
+        fputs(line, fp);
     }
+    fclose(fp);
     return 1;
 }
+
 void u_print_crossproduct(Vector vec_a, Vector vec_b)
 {
     printf("The vectors %s, parallel \n", v_check_if_parallel(vec_a, vec_b) ? "is" : "is not");

@@ -1,6 +1,6 @@
-#include "utility.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "utility.h"
 #include "routes.h"
 
 Point *alloc_route(utiny_i size);
@@ -9,6 +9,8 @@ Point *r_north_bound_routes[4];
 Point *r_south_bound_routes[4];
 Point *r_east_bound_routes[4];
 Point *r_west_bound_routes[4];
+
+Point r_all_points[TOTAL_POINTS];
 
 /* generates the points in the xy coordinate
  * space, and adds them to r_all_points */
@@ -46,6 +48,7 @@ void r_generate_routes()
     Point *east_to_west = alloc_route(4);
     Point *south_to_west = alloc_route(4);
 
+    #pragma region
     west_to_north[0] = r_all_points[6];
     west_to_north[1] = r_all_points[7];
     west_to_north[2] = r_all_points[4];
@@ -86,6 +89,7 @@ void r_generate_routes()
     south_to_west[1] = r_all_points[8];
     south_to_west[2] = r_all_points[3];
     south_to_west[3] = r_all_points[2];
+#pragma endregion
 
     printf("assembled plain routes...\n");
 
@@ -109,6 +113,73 @@ void r_generate_routes()
     r_west_bound_routes[1] = south_to_west;
     r_west_bound_routes[2] = east_to_west;
     printf("assembled routes...\n");
+}
+
+Point *r_random_route()
+{
+    switch (rand() % 4)
+    {
+    case 0:
+        return r_north_bound_routes[rand() % 3];
+        break;
+    case 1:
+        return r_south_bound_routes[rand() % 3];
+        break;
+    case 2:
+        return r_east_bound_routes[rand() % 3];
+        break;
+    case 3:
+        return r_west_bound_routes[rand() % 3];
+        break;
+    }
+    return NULL;
+}
+
+/* TODO: find a better way  */
+Point r_point_by_index(uint i) {
+    switch (i)
+    {
+    case 0:
+        return r_south_bound_routes[0][0];
+        break;
+    case 1:
+        return r_north_bound_routes[0][2];
+        break;
+    case 2:
+        return r_west_bound_routes[2][2];
+        break;
+    case 3:
+        return r_east_bound_routes[0][1];
+        break;
+    case 4:
+        return r_north_bound_routes[1][1];
+        break;
+    case 5:
+        return r_north_bound_routes[1][0];
+        break;
+    case 6:
+        return r_north_bound_routes[2][0];
+        break;
+    case 7:
+        return r_south_bound_routes[2][1];
+        break;
+    case 8:
+        return r_north_bound_routes[0][1];
+        break;
+    case 9:
+        return r_east_bound_routes[1][2];
+        break;
+    case 10:
+        return r_south_bound_routes[0][2];
+        break;
+    case 11:
+        return r_north_bound_routes[0][0];
+        break;
+    default:
+        return u_new_point(-1, -1);
+        break;
+    }
+
 }
 
 /* internal route allocation function */

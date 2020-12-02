@@ -31,7 +31,7 @@ void s_run_simulation(Config config)
                            time, config.sim_duration))
         {
             /* TODO LP: Make dynamic route system */
-            goals = r_north_bound_routes[2];
+            goals = r_random_route();
 
             for (i = 0; i < MAX_VEHICLES; i++)
             {
@@ -76,8 +76,9 @@ void s_run_simulation(Config config)
             /* if car is adequately close to its current goal */
             if (u_distance_sqr(current_car->position, v_from_point(*current_goal)) < 5)
             {
-
+                printf("-----------\n");
                 current_goal->visits++;
+                u_print_point(current_goal);
 
                 /* if it's the last goal */
                 if (on_last_goal(current_car))
@@ -118,10 +119,17 @@ utiny_i on_last_goal(Car *c)
 utiny_i need_more_cars(uint curr_veh, uint total_veh,
                        uint curr_time, uint total_time)
 {
-    float time_per_car = (float)total_time / (float)total_veh;
+    if (total_veh > curr_time)
+    {
+        static int i = 0;
+        printf("spawned car #%d\n", ++i);
+        return 1;
+    }
+    return 0;
+    /* float time_per_car = (float)total_time / (float)total_veh;
     float veh_time = (float)curr_veh * time_per_car;
 
-    return curr_time > veh_time;
+    return curr_time > veh_time; */
 }
 
 /* internal helper function for sim */

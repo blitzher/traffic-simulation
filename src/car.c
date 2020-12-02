@@ -5,7 +5,8 @@
 #include "../libs/simulation.h"
 int main(void)
 {
-    utiny_i i;
+    Point * route_of_interest;
+    srand(time(NULL));
     /*WIP.*/
 
     r_generate_points();
@@ -15,11 +16,7 @@ int main(void)
 
     s_run_simulation(u_configs);
 
-    for (i = 0; i < MAX_ROUTE_LEN; i++)
-    {
-        u_print_point(&r_north_bound_routes[2][i]);
-    }
-    
+    u_compile_output(".output");
 
     c_printf("simulation terminated succesfully\n", BLU);
 
