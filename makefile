@@ -1,6 +1,6 @@
 # setup variables
 CC = gcc
-CFLAGS = 
+CFLAGS = -ansi -pedantic -Wall
 COMP = $(CC) $(CFLAGS)
 LIB = libs
 TEMP = temp
@@ -35,10 +35,6 @@ $(TEMP)/%.o : $(LIB)/%.c $(LIB)/%.h
 .PRECIOUS : $(OBJS)
 
 # compile with debug flag, and run gdb
-debug : car
-	@mkdir -p $(TEMP) $(BIN)
-	$(COMP) -g $(OBJS) $(SRC)/car.c -o $(BIN)/main_debug
-	gdb $(BIN)/main_debug
 
 # remove all items in temporary folders
 clear :

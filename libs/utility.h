@@ -54,7 +54,7 @@ typedef struct Point
 
 typedef struct Car
 {
-    Vector *position;
+    Vector position;
     Point *goals;
     utiny_i goal_index;
     double speed;
@@ -86,7 +86,7 @@ int u_load_configs(char *file_name, Config *out);
 /* generate a new point with default values set */
 Point u_new_point(utiny_i x, utiny_i y);
 /* generate a new car with default values set */
-Car u_new_car(Point *start, Point *goals);
+Car u_new_car(Point *goals);
 
 /* helper function for printing a point */
 void u_print_point(Point *);

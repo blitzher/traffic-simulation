@@ -37,16 +37,17 @@ Point u_new_point(utiny_i x, utiny_i y)
     return p;
 }
 
-Car u_new_car(Point *start, Point *goals)
+Car u_new_car(Point *goals)
 {
     Car c;
-    Vector c_position = v_from_point(*start);
-    c.position = &c_position;
+    
+    c.position = v_from_point(goals[0]);
     c.goals = goals;
-    c.goal_index = 0;
+    c.goals[0].visits++;
+    c.goal_index = 1;
     /* load relevant information from config struct */
     c.reaction_time = u_configs.car_reaction_time;
-
+    c.speed = 50/3.6;
     /* has been properly initialised */
     c.init = 1;
     return c;
@@ -63,7 +64,7 @@ void u_print_point(Point *p)
 void u_print_car(Car c)
 {
     printf("Position:\n");
-    /* TODO: Print position of car as a Vector */
+    u_print_vector(&c.position);
     printf("Current goal:\n");
     u_print_point(&c.goals[c.goal_index]);
 }
@@ -88,9 +89,13 @@ void u_print_configs(Config con)
     printf("weather: %d\n", con.weather);
     printf("sim-duration: %d\n", con.sim_duration);
 }
+void u_print_vector(Vector * vec) {
+    printf("<x:%.1f, y:%.1f>\n", vec->x, vec->y);
+}
 
 int u_load_configs(char *file_name, Config *out)
 {
+
     int i;
     FILE *fp;
     char line[MAX_LINE_LENGTH];
