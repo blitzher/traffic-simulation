@@ -48,6 +48,7 @@ void s_run_simulation(Config config)
             }
         }
 
+        /* For every car in the simulation, check goals and if its final goal. */
         for (i = 0; i < MAX_VEHICLES; i++)
         {
             /* if car is dead, go to next car */
@@ -84,7 +85,7 @@ void s_run_simulation(Config config)
                 /* if it's the last goal */
                 if (on_last_goal(current_car))
                 {
-                    /* yeet */
+                    /* car go die and gets replaced. */
                     all_vehicles[i].init = 0;
                 }
                 else
@@ -95,7 +96,7 @@ void s_run_simulation(Config config)
             }
         }
     }
-    /* fly free my little memory, flyyyyyy */
+    /* frees allocated memory. */
     free(all_vehicles);
 }
 
@@ -152,15 +153,16 @@ void move_car_toward_goal(Car *car)
     car->position = new_position;
 }
 
+/* Counts and returns amount of alive cars. */
 uint count_cars(Car *cars)
 {
-    uint i;
+    uint i, j;
     for (i = 0; i < MAX_VEHICLES; i++)
     {
         if (cars[i].init != 1)
         {
-            break;
+            j++;
         }
     }
-    return i;
+    return MAX_VEHICLES-j;
 }
