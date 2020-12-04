@@ -24,6 +24,7 @@ void s_run_simulation(Config config)
     u_print_configs(config);
     printf("\nrunning simulation...\n\n");
 
+    /* make into function for refinement? */
     /* run the simulation  */
     for (time = 0; time < config.sim_duration; time++)
     {
