@@ -1,11 +1,10 @@
 #include <stdio.h>
-#include "../libs/routes.h"
 #include "../libs/utility.h"
+#include "../libs/routes.h"
 #include "../libs/colours.h"
 #include "../libs/simulation.h"
 int main(void)
 {
-    Point * route_of_interest;
     srand(time(NULL));
     /*WIP.*/
 

@@ -1,21 +1,24 @@
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "utility.h"
 #include "routes.h"
 
-Point *alloc_route(utiny_i size);
+Route alloc_route();
 
-Point *r_north_bound_routes[4];
-Point *r_south_bound_routes[4];
-Point *r_east_bound_routes[4];
-Point *r_west_bound_routes[4];
+Route r_north_bound_routes[4];
+Route r_south_bound_routes[4];
+Route r_east_bound_routes[4];
+Route r_west_bound_routes[4];
 
-Point r_all_points[TOTAL_POINTS];
+Point **r_all_points;
 
 /* generates the points in the xy coordinate
  * space, and adds them to r_all_points */
 void r_generate_points()
 {
+    r_all_points = (Point **)malloc(sizeof(Point *) * TOTAL_POINTS);
+
     r_all_points[0] = u_new_point(40, 0);
     r_all_points[1] = u_new_point(60, 0);
     r_all_points[2] = u_new_point(0, 40);
@@ -35,61 +38,89 @@ void r_generate_routes()
 {
     /* thanks to Peter Frandsen, for debugging this
      * PoS code :) */
-    Point *west_to_north = alloc_route(4);
-    Point *south_to_north = alloc_route(4);
-    Point *east_to_north = alloc_route(4);
-    Point *west_to_south = alloc_route(4);
-    Point *east_to_south = alloc_route(4);
-    Point *north_to_south = alloc_route(4);
-    Point *south_to_east = alloc_route(4);
-    Point *north_to_east = alloc_route(4);
-    Point *west_to_east = alloc_route(4);
-    Point *north_to_west = alloc_route(4);
-    Point *east_to_west = alloc_route(4);
-    Point *south_to_west = alloc_route(4);
+    Route west_to_north = alloc_route();
+    Route south_to_north = alloc_route();
+    Route east_to_north = alloc_route();
+    Route west_to_south = alloc_route();
+    Route east_to_south = alloc_route();
+    Route north_to_south = alloc_route();
+    Route south_to_east = alloc_route();
+    Route north_to_east = alloc_route(); /* dis work */
+    Route west_to_east = alloc_route();
+    Route north_to_west = alloc_route();
+    Route east_to_west = alloc_route();
+    Route south_to_west = alloc_route(); /* dis work */
 
-    #pragma region
-    west_to_north[0] = r_all_points[6];
-    west_to_north[1] = r_all_points[7];
-    west_to_north[2] = r_all_points[4];
-    west_to_north[3] = r_all_points[1];
-    south_to_north[0] = r_all_points[11];
-    south_to_north[1] = r_all_points[8];
-    south_to_north[2] = r_all_points[1];
-    east_to_north[0] = r_all_points[5];
-    east_to_north[1] = r_all_points[4];
-    east_to_north[2] = r_all_points[1];
-    west_to_south[0] = r_all_points[6];
-    west_to_south[1] = r_all_points[7];
-    west_to_south[2] = r_all_points[10];
-    east_to_south[0] = r_all_points[5];
-    east_to_south[1] = r_all_points[4];
-    east_to_south[2] = r_all_points[7];
-    east_to_south[3] = r_all_points[10];
-    north_to_south[0] = r_all_points[0];
-    north_to_south[1] = r_all_points[3];
-    north_to_south[2] = r_all_points[10];
-    south_to_east[0] = r_all_points[11];
-    south_to_east[1] = r_all_points[8];
-    south_to_east[2] = r_all_points[9];
-    north_to_east[0] = r_all_points[0];
-    north_to_east[1] = r_all_points[3];
-    north_to_east[2] = r_all_points[8];
-    north_to_east[3] = r_all_points[9];
-    west_to_east[0] = r_all_points[6];
-    west_to_east[1] = r_all_points[7];
-    west_to_east[2] = r_all_points[9];
-    north_to_west[0] = r_all_points[0];
-    north_to_west[1] = r_all_points[3];
-    north_to_west[2] = r_all_points[2];
-    east_to_west[0] = r_all_points[5];
-    east_to_west[1] = r_all_points[4];
-    east_to_west[2] = r_all_points[2];
-    south_to_west[0] = r_all_points[11];
-    south_to_west[1] = r_all_points[8];
-    south_to_west[2] = r_all_points[3];
-    south_to_west[3] = r_all_points[2];
-#pragma endregion
+    /* assign the names to each route */
+    strcpy(west_to_north.name, "west_to_north");
+    strcpy(south_to_north.name, "south_to_north");
+    strcpy(east_to_north.name, "east_to_north");
+    strcpy(west_to_south.name, "west_to_south");
+    strcpy(east_to_south.name, "east_to_south");
+    strcpy(north_to_south.name, "north_to_south");
+    strcpy(south_to_east.name, "south_to_east");
+    strcpy(north_to_east.name, "north_to_east");
+    strcpy(west_to_east.name, "west_to_east");
+    strcpy(north_to_west.name, "north_to_west");
+    strcpy(east_to_west.name, "east_to_west");
+    strcpy(south_to_west.name, "south_to_west");
+
+    west_to_north.points[0] = r_all_points[6];
+    west_to_north.points[1] = r_all_points[7];
+    west_to_north.points[2] = r_all_points[4];
+    west_to_north.points[3] = r_all_points[1];
+    south_to_north.points[0] = r_all_points[11];
+    south_to_north.points[1] = r_all_points[8];
+    south_to_north.points[2] = r_all_points[1];
+    south_to_north.points[3] = u_new_point(-1, -1);
+    south_to_north.points[3]->init = 0;
+    east_to_north.points[0] = r_all_points[5];
+    east_to_north.points[1] = r_all_points[4];
+    east_to_north.points[2] = r_all_points[1];
+    east_to_north.points[3] = u_new_point(-1, -1);
+    east_to_north.points[3]->init = 0;
+    west_to_south.points[0] = r_all_points[6];
+    west_to_south.points[1] = r_all_points[7];
+    west_to_south.points[2] = r_all_points[10];
+    west_to_south.points[3] = u_new_point(-1, -1);
+    west_to_south.points[3]->init = 0;;
+    east_to_south.points[0] = r_all_points[5];
+    east_to_south.points[1] = r_all_points[4];
+    east_to_south.points[2] = r_all_points[7];
+    east_to_south.points[3] = r_all_points[10];
+    north_to_south.points[0] = r_all_points[0];
+    north_to_south.points[1] = r_all_points[3];
+    north_to_south.points[2] = r_all_points[10];
+    north_to_south.points[3] = u_new_point(-1, -1);
+    north_to_south.points[3]->init = 0;
+    south_to_east.points[0] = r_all_points[11];
+    south_to_east.points[1] = r_all_points[8];
+    south_to_east.points[2] = r_all_points[9];
+    south_to_east.points[3] = u_new_point(-1, -1);
+    south_to_east.points[3]->init = 0;
+    north_to_east.points[0] = r_all_points[0];
+    north_to_east.points[1] = r_all_points[3];
+    north_to_east.points[2] = r_all_points[8];
+    north_to_east.points[3] = r_all_points[9];
+    west_to_east.points[0] = r_all_points[6];
+    west_to_east.points[1] = r_all_points[7];
+    west_to_east.points[2] = r_all_points[9];
+    west_to_east.points[3] = u_new_point(-1, -1);
+    west_to_east.points[3]->init = 0;
+    north_to_west.points[0] = r_all_points[0];
+    north_to_west.points[1] = r_all_points[3];
+    north_to_west.points[2] = r_all_points[2];
+    north_to_west.points[3] = u_new_point(-1, -1);
+    north_to_west.points[3]->init = 0;
+    east_to_west.points[0] = r_all_points[5];
+    east_to_west.points[1] = r_all_points[4];
+    east_to_west.points[2] = r_all_points[2];
+    east_to_west.points[3] = u_new_point(-1, -1);
+    east_to_west.points[3]->init = 0;
+    south_to_west.points[0] = r_all_points[11];
+    south_to_west.points[1] = r_all_points[8];
+    south_to_west.points[2] = r_all_points[3];
+    south_to_west.points[3] = r_all_points[2];
 
     printf("assembled plain routes...\n");
 
@@ -115,7 +146,7 @@ void r_generate_routes()
     printf("assembled routes...\n");
 }
 
-Point *r_random_route()
+Route r_random_route()
 {
     switch (rand() % 4)
     {
@@ -128,62 +159,61 @@ Point *r_random_route()
     case 2:
         return r_east_bound_routes[rand() % 3];
         break;
-    case 3:
+    case 3: default: 
         return r_west_bound_routes[rand() % 3];
         break;
     }
-    return NULL;
 }
 
 /* TODO: find a better way  */
-Point r_point_by_index(uint i) {
+Point *r_point_by_index(uint i)
+{
     switch (i)
     {
     case 0:
-        return r_south_bound_routes[0][0];
+        return r_south_bound_routes[0].points[0];
         break;
     case 1:
-        return r_north_bound_routes[0][2];
+        return r_north_bound_routes[0].points[2];
         break;
     case 2:
-        return r_west_bound_routes[2][2];
+        return r_west_bound_routes[2].points[2];
         break;
     case 3:
-        return r_east_bound_routes[0][1];
+        return r_east_bound_routes[0].points[1];
         break;
     case 4:
-        return r_north_bound_routes[1][1];
+        return r_north_bound_routes[1].points[1];
         break;
     case 5:
-        return r_north_bound_routes[1][0];
+        return r_north_bound_routes[1].points[0];
         break;
     case 6:
-        return r_north_bound_routes[2][0];
+        return r_north_bound_routes[2].points[0];
         break;
     case 7:
-        return r_south_bound_routes[2][1];
+        return r_south_bound_routes[2].points[1];
         break;
     case 8:
-        return r_north_bound_routes[0][1];
+        return r_north_bound_routes[0].points[1];
         break;
     case 9:
-        return r_east_bound_routes[1][2];
+        return r_east_bound_routes[1].points[2];
         break;
     case 10:
-        return r_south_bound_routes[0][2];
+        return r_south_bound_routes[0].points[2];
         break;
     case 11:
-        return r_north_bound_routes[0][0];
+        return r_north_bound_routes[0].points[0];
         break;
     default:
-        return u_new_point(-1, -1);
+        return NULL;
         break;
     }
-
 }
 
 /* internal route allocation function */
-Point *alloc_route(utiny_i size)
+Route alloc_route()
 {
-    return (Point *)malloc(sizeof(Point) * size);
+    return *(Route *)malloc(sizeof(Route));
 }

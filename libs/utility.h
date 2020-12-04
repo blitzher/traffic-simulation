@@ -2,6 +2,7 @@
 
 
 #include <stdio.h>
+
 /* define shorthands for
  * unsigned int
  * unsigned short
@@ -49,13 +50,14 @@ typedef struct Point
 /* abstract class for a point
  * to get a new car, use u_new_car */
 
-/* include vector struct for car */
+/* include vector & route struct for car */
 #include "vector.h"
+#include "routes.h"
 
 typedef struct Car
 {
     Vector position;
-    Point *goals;
+    Route route;
     utiny_i goal_index;
     double speed;
     double desired_speed;
@@ -84,16 +86,16 @@ double u_distance_sqr(Vector, Vector);
  * and output to output parameter  */
 int u_load_configs(char *file_name, Config *out);
 /* generate a new point with default values set */
-Point u_new_point(utiny_i x, utiny_i y);
+Point *u_new_point(utiny_i x, utiny_i y);
 /* generate a new car with default values set */
-Car u_new_car(Point *goals);
+Car u_new_car(Route goals);
 
 /* helper function for printing a point */
 void u_print_point(Point *);
 /* helper function for printing a car */
 void u_print_car(Car);
 /* helper function for printing a route */
-void u_print_route(Point *);
+void u_print_route(Route);
 /* helper function for printing a vector */
 void u_print_vector(Vector *);
 

@@ -5,13 +5,22 @@
  * are prefixed by 'r_' */
 #pragma once
 
-#include "utility.h"
 
 /* define symbolic constants
  * related to the generation of routes */
 #define TOTAL_POINTS 12
 #define TOTAL_ROUTES 12
 #define MAX_ROUTE_LEN 4
+
+/* a route is primarily
+ * an array of points */
+typedef struct Route {
+    Point* points[MAX_ROUTE_LEN];
+    utiny_i length;
+    char name[20];
+} Route;
+
+#include "utility.h"
 
 void r_generate_points();
 void r_generate_routes();
@@ -27,19 +36,19 @@ void r_generate_routes();
 
 /* collection of all points, 
  * sorted from top left to bottom right */
-Point r_all_points[TOTAL_POINTS];
+Point **r_all_points;
 
 /* collections of each route heading north */
-Point *r_north_bound_routes[MAX_ROUTE_LEN];
+Route r_north_bound_routes[4];
 /* collections of each route heading south */
-Point *r_south_bound_routes[MAX_ROUTE_LEN];
+Route r_south_bound_routes[4];
 /* collections of each route heading east */
-Point *r_east_bound_routes[MAX_ROUTE_LEN];
+Route r_east_bound_routes[4];
 /* collections of each route heading west */
-Point *r_west_bound_routes[MAX_ROUTE_LEN];
+Route r_west_bound_routes[4];
 
 /* pick a random route among all, unbiased */
-Point *r_random_route();
+Route r_random_route();
 
 /* get a point by its (i, j) index */
-Point r_point_by_index(uint i);
+Point *r_point_by_index(uint i);

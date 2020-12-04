@@ -13,7 +13,7 @@ void s_run_simulation(Config config)
 {
     int time;
     int i, j;
-    Point *goals;
+    Route goals;
 
     Car *current_car;
     Point *current_goal;
@@ -27,11 +27,14 @@ void s_run_simulation(Config config)
     /* run the simulation  */
     for (time = 0; time < config.sim_duration; time++)
     {
+        if (time % 100 == 0) {
+            
+        } 
         if (need_more_cars(cars_spawned, config.car_total_amount,
                            time, config.sim_duration))
         {
             /* TODO LP: Make dynamic route system */
-            goals = r_random_route();
+            goals = (cars_spawned < config.car_total_amount*0.5) ? r_south_bound_routes[0] : r_north_bound_routes[2];/* r_random_route(); */
 
             for (i = 0; i < MAX_VEHICLES; i++)
             {
@@ -62,23 +65,20 @@ void s_run_simulation(Config config)
             }
 
             current_car = &all_vehicles[i];
-            current_goal = &current_car->goals[current_car->goal_index];
-
-            /* Checking speed under 1, standstill occurs and increment wait_points. */
+            current_goal = current_car->route.points[current_car->goal_index];
 
             move_car_toward_goal(current_car);
 
+            /* Checking speed under 1, standstill occurs and increment wait_points. */
             if (current_car->speed < 1)
             {
                 current_goal->wait_points++;
             }
 
             /* if car is adequately close to its current goal */
-            if (u_distance_sqr(current_car->position, v_from_point(*current_goal)) < 5)
+            if (u_distance_sqr(current_car->position, v_from_point(*current_goal)) < 10)
             {
-                printf("-----------\n");
                 current_goal->visits++;
-                u_print_point(current_goal);
 
                 /* if it's the last goal */
                 if (on_last_goal(current_car))
@@ -105,9 +105,11 @@ utiny_i on_last_goal(Car *c)
     utiny_i i;
     utiny_i last_goal_index;
 
+
+    
     for (i = 0; i < MAX_ROUTE_LEN; i++)
     {
-        if (c->goals[i].init == 1)
+        if (c->route.points[i]->init == 1)
         {
             last_goal_index = i;
         }
@@ -121,8 +123,6 @@ utiny_i need_more_cars(uint curr_veh, uint total_veh,
 {
     if (total_veh > curr_time)
     {
-        static int i = 0;
-        printf("spawned car #%d\n", ++i);
         return 1;
     }
     return 0;
@@ -135,7 +135,7 @@ utiny_i need_more_cars(uint curr_veh, uint total_veh,
 /* internal helper function for sim */
 void move_car_toward_goal(Car *car)
 {
-    Point *current_goal = &car->goals[car->goal_index];
+    Point *current_goal = car->route.points[car->goal_index];
 
     double dx = current_goal->x - car->position.x;
     double dy = current_goal->y - car->position.y;

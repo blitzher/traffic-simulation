@@ -15,12 +15,12 @@ OBJS = $(TEMP)/utility.o \
 	   $(TEMP)/vector.o \
 	   $(TEMP)/simulation.o
 
-% : $(SRC)/%.c $(OBJS)
+$(BIN)/%.exe : $(SRC)/%.c $(OBJS)
 		
 	@mkdir -p $(TEMP) $(BIN)
 	@echo Compiling $<...
 
-	@$(COMP) $(OBJS) $< -o $(BIN)/$@
+	@$(COMP) $(OBJS) $< -o $@
 	@echo
 	@echo Compilation successful
 
@@ -48,8 +48,8 @@ clear :
 	@echo cleared temporary files
 
 # clear, then make
-clean : clear car
+clean : clear $(BIN)/car.exe
 
 # compile and run main
-run : car
-	@./$(BIN)/car
+run : $(BIN)/car.exe
+	@./$(BIN)/car.exe

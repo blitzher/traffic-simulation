@@ -25,30 +25,30 @@ double u_distance_sqr(Vector a, Vector b)
 
 /* struct initialization functions */
 
-Point u_new_point(utiny_i x, utiny_i y)
+Point *u_new_point(utiny_i x, utiny_i y)
 {
-    Point p;
-    p.x = x;
-    p.y = y;
-    p.wait_points = 0;
-    p.visits = 0;
+    Point *p = (Point*)malloc(sizeof(Point));
+    p->x = x;
+    p->y = y;
+    p->wait_points = 0;
+    p->visits = 0;
 
     /* has been properly initialised */
-    p.init = 1;
+    p->init = 1;
     return p;
 }
 
-Car u_new_car(Point *goals)
+Car u_new_car(Route route)
 {
     Car c;
     
-    c.position = v_from_point(goals[0]);
-    c.goals = goals;
-    c.goals[0].visits++;
+    c.position = v_from_point(*route.points[0]);
+    c.route = route;
+    c.route.points[0]->visits++;
     c.goal_index = 1;
     /* load relevant information from config struct */
     c.reaction_time = u_configs.car_reaction_time;
-    c.speed = 2;
+    c.speed = 50/3.6;
     /* has been properly initialised */
     c.init = 1;
     return c;
@@ -68,17 +68,12 @@ void u_print_car(Car c)
     printf("Position:\n");
     u_print_vector(&c.position);
     printf("Current goal:\n");
-    u_print_point(&c.goals[c.goal_index]);
+    u_print_point(c.route.points[c.goal_index]);
 }
 
-void u_print_route(Point *route)
+void u_print_route(Route route)
 {
-    utiny_i i;
-
-    for (i = 0; i < MAX_ROUTE_LEN && route[i].init == 1; i++)
-    {
-        u_print_point(&route[i]);
-    }
+    printf("%s\n", route.name);
 }
 
 void u_print_configs(Config con)
@@ -201,7 +196,7 @@ int u_compile_output(char *output_file)
 {
     uint i;
     FILE *fp;
-    Point point;
+    Point *point;
     char line[80];
 
     fp = fopen(output_file, "w");
@@ -209,8 +204,8 @@ int u_compile_output(char *output_file)
     for (i = 0; i < TOTAL_POINTS; i++)
     {
         point = r_point_by_index(i);
-        sprintf(line, "<x:%3d, y:%3d - visits:%3d, wait_points:%3d\n",
-        point.x, point.y, point.visits, point.wait_points);
+        sprintf(line, "<x:%3d, y:%3d - visits:%4d, wait_points:%3d>\n",
+        point->x, point->y, point->visits, point->wait_points);
         fputs(line, fp);
     }
     fclose(fp);
