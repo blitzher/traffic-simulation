@@ -5,7 +5,7 @@
 /* internal helper function for sim */
 utiny_i need_more_cars();
 utiny_i on_last_goal(Car *c);
-void move_car_toward_goal(Car *c);
+void move_car_toward_goal(Car *c, Vector*);
 utiny_i check_goal(Car c);
 uint count_cars(Car *cars);
 
@@ -17,6 +17,7 @@ void s_run_simulation(Config config)
 
     Car *current_car;
     Point *current_goal;
+    Vector *upcoming_positions = (Vector *)malloc(sizeof(Vector)*MAX_VEHICLES);
 
     uint cars_spawned = 0;
     Car *all_vehicles = (Car *)malloc(sizeof(Car) * MAX_VEHICLES);
@@ -28,13 +29,14 @@ void s_run_simulation(Config config)
     /* run the simulation  */
     for (time = 0; time < config.sim_duration; time++)
     {
+        if(DEBUG) { printf("time: %d\n", time);}
         if (time % 100 == 0)
         {
         }
         if (need_more_cars(cars_spawned, config.car_total_amount,
                            time, config.sim_duration))
         {
-            /* TODO LP: Make dynamic route system */
+            /* TODO: Make dynamic route system */
             goals = r_random_route();
 
             for (i = 0; i < MAX_VEHICLES; i++)
@@ -48,14 +50,9 @@ void s_run_simulation(Config config)
             }
         }
 
+
+
         /* For every car in the simulation, check goals and if its final goal. */
-
-        /*if (DEBUG)
-        {
-            printf("-----------\n");
-            printf("%d\n", time);
-        }*/
-
         for (i = 0; i < MAX_VEHICLES; i++)
         {
             /* if car is dead, go to next car */
@@ -67,13 +64,8 @@ void s_run_simulation(Config config)
             current_car = &all_vehicles[i];
             current_goal = current_car->route.points[current_car->goal_index];
 
-            move_car_toward_goal(current_car);
-            /*if (DEBUG)
-            {
-                printf("--------\n");
-                printf("car %d\n", i);
-                u_print_car(*current_car);
-            }*/
+            /* TODO: handle concurrect collisions cleanly */
+            move_car_toward_goal(current_car, &upcoming_positions[i]);
 
             /* Checking speed under 1, standstill occurs and increment wait_points. */
             if (current_car->speed < 1)
@@ -82,6 +74,22 @@ void s_run_simulation(Config config)
             }
 
             /* if car is adequately close to its current goal */
+            
+        }
+        
+        /* Move every car according to its newfound position */
+        for (i = 0; i < MAX_VEHICLES; i++)
+        {
+            if (all_vehicles[i].init != 1)
+            {
+                continue;
+            }
+
+            current_car = &all_vehicles[i];
+            current_goal = current_car->route.points[current_car->goal_index];
+
+            current_car->position = upcoming_positions[i];
+
             if (u_distance_sqr(current_car->position, v_from_point(*current_goal)) < 12)
             {
                 current_goal->visits++;
@@ -99,9 +107,11 @@ void s_run_simulation(Config config)
                 }
             }
         }
+        
     }
     /* frees allocated memory. */
     free(all_vehicles);
+    free(upcoming_positions);
 }
 
 /* figure out if a cars current goal 
@@ -137,7 +147,7 @@ utiny_i need_more_cars(uint curr_veh, uint total_veh,
 }
 
 /* internal helper function for sim */
-void move_car_toward_goal(Car *car)
+void move_car_toward_goal(Car *car, Vector* output)
 {
     Point *current_goal = car->route.points[car->goal_index];
 
@@ -152,7 +162,7 @@ void move_car_toward_goal(Car *car)
 
     /* assign new position to car */
     Vector new_position = v_add(car->position, car_new_position);
-    car->position = new_position;
+    *output = new_position;
 }
 
 /* Counts and returns amount of alive cars. */
