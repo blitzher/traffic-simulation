@@ -12,7 +12,7 @@ uint count_cars(Car *cars);
 void s_run_simulation(Config config)
 {
     int time;
-    int i, j;
+    int i;
     Route goals;
 
     Car *current_car;
@@ -28,14 +28,14 @@ void s_run_simulation(Config config)
     /* run the simulation  */
     for (time = 0; time < config.sim_duration; time++)
     {
-        if (time % 100 == 0) {
-            
-        } 
+        if (time % 100 == 0)
+        {
+        }
         if (need_more_cars(cars_spawned, config.car_total_amount,
                            time, config.sim_duration))
         {
             /* TODO LP: Make dynamic route system */
-            goals = (cars_spawned < config.car_total_amount*0.5) ? r_south_bound_routes[0] : r_north_bound_routes[2];/* r_random_route(); */
+            goals = r_random_route();
 
             for (i = 0; i < MAX_VEHICLES; i++)
             {
@@ -49,20 +49,18 @@ void s_run_simulation(Config config)
         }
 
         /* For every car in the simulation, check goals and if its final goal. */
+
+        /*if (DEBUG)
+        {
+            printf("-----------\n");
+            printf("%d\n", time);
+        }*/
+
         for (i = 0; i < MAX_VEHICLES; i++)
         {
             /* if car is dead, go to next car */
             if (all_vehicles[i].init != 1)
             {
-                /* Doesn't serve purpose but good practice wpgg*/
-                for (j = i; j < MAX_VEHICLES; j++)
-                {
-                    if (all_vehicles[j].init == 1)
-                    {
-                        break;
-                    }
-                }
-                i = j;
                 continue;
             }
 
@@ -70,6 +68,12 @@ void s_run_simulation(Config config)
             current_goal = current_car->route.points[current_car->goal_index];
 
             move_car_toward_goal(current_car);
+            /*if (DEBUG)
+            {
+                printf("--------\n");
+                printf("car %d\n", i);
+                u_print_car(*current_car);
+            }*/
 
             /* Checking speed under 1, standstill occurs and increment wait_points. */
             if (current_car->speed < 1)
@@ -78,7 +82,7 @@ void s_run_simulation(Config config)
             }
 
             /* if car is adequately close to its current goal */
-            if (u_distance_sqr(current_car->position, v_from_point(*current_goal)) < 10)
+            if (u_distance_sqr(current_car->position, v_from_point(*current_goal)) < 12)
             {
                 current_goal->visits++;
 
@@ -86,12 +90,12 @@ void s_run_simulation(Config config)
                 if (on_last_goal(current_car))
                 {
                     /* car go die and gets replaced. */
-                    all_vehicles[i].init = 0;
+                    current_car->init = 0;
                 }
                 else
                 {
                     /* otherwise, set next goal to current goal */
-                    all_vehicles[i].goal_index++;
+                    current_car->goal_index++;
                 }
             }
         }
@@ -107,8 +111,6 @@ utiny_i on_last_goal(Car *c)
     utiny_i i;
     utiny_i last_goal_index;
 
-
-    
     for (i = 0; i < MAX_ROUTE_LEN; i++)
     {
         if (c->route.points[i]->init == 1)
@@ -164,5 +166,5 @@ uint count_cars(Car *cars)
             j++;
         }
     }
-    return MAX_VEHICLES-j;
+    return MAX_VEHICLES - j;
 }

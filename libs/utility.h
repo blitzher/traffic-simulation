@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <stdio.h>
 
 /* define shorthands for
@@ -12,7 +11,7 @@ typedef unsigned short ushort;
 typedef unsigned char utiny_i;
 
 /* arbitrary definition of maximum amount of goals */
-#define MAX_GOALS 10;
+#define MAX_GOALS 10
 #define DEBUG 1
 
 /* abstract struct for configurations
@@ -68,8 +67,6 @@ typedef struct Car
     utiny_i init;
 
 } Car;
-
-
 
 /* global config variable */
 Config u_configs;

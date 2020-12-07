@@ -27,7 +27,7 @@ double u_distance_sqr(Vector a, Vector b)
 
 Point *u_new_point(utiny_i x, utiny_i y)
 {
-    Point *p = (Point*)malloc(sizeof(Point));
+    Point *p = (Point *)malloc(sizeof(Point));
     p->x = x;
     p->y = y;
     p->wait_points = 0;
@@ -41,14 +41,14 @@ Point *u_new_point(utiny_i x, utiny_i y)
 Car u_new_car(Route route)
 {
     Car c;
-    
+
     c.position = v_from_point(*route.points[0]);
     c.route = route;
     c.route.points[0]->visits++;
     c.goal_index = 1;
     /* load relevant information from config struct */
     c.reaction_time = u_configs.car_reaction_time;
-    c.speed = 50/3.6;
+    c.speed = u_configs.car_initial_speed;
     /* has been properly initialised */
     c.init = 1;
     return c;
@@ -85,8 +85,10 @@ void u_print_configs(Config con)
     printf("point-free-radius: %f\n", con.point_free_radius);
     printf("weather: %d\n", con.weather);
     printf("sim-duration: %d\n", con.sim_duration);
+    printf("Amount of cars simulated: %u", con.car_total_amount);
 }
-void u_print_vector(Vector * vec) {
+void u_print_vector(Vector *vec)
+{
     printf("<x:%.1f, y:%.1f>\n", vec->x, vec->y);
 }
 
@@ -194,6 +196,7 @@ int u_load_configs(char *file_name, Config *out)
 
 int u_compile_output(char *output_file)
 {
+    unsigned int total_visit = 0;
     uint i;
     FILE *fp;
     Point *point;
@@ -205,9 +208,12 @@ int u_compile_output(char *output_file)
     {
         point = r_point_by_index(i);
         sprintf(line, "<x:%3d, y:%3d - visits:%4d, wait_points:%3d>\n",
-        point->x, point->y, point->visits, point->wait_points);
+                point->x, point->y, point->visits, point->wait_points);
+        total_visit += point->visits;
         fputs(line, fp);
     }
+    sprintf(line, "Sum of visits         :%5u\n", total_visit);
+    fputs(line, fp);
     fclose(fp);
     return 1;
 }
