@@ -4,6 +4,10 @@
 #include "utility.h"
 #include "routes.h"
 
+Route route_from_north();
+Route route_from_south();
+Route route_from_west();
+Route route_from_east();
 Route alloc_route();
 
 Route r_north_bound_routes[4];
@@ -151,92 +155,81 @@ Route r_random_route()
 {
     int i;
     i = rand() % 100 + 1;
-    if (i <= 44) /*Traffic from south*/
+    /* traffic from south */
+    if (i <= u_configs.traffic_from_north)
     {
-        i = rand() % 100 + 1;
-        if (i <= 75)
-        {
-            return r_north_bound_routes[0];
-        }
-        if (i > 75 && i < 88)
-        {
-            return r_east_bound_routes[1];
-        }
-        return r_west_bound_routes[1];
+        return route_from_north();
     }
-    if (i > 44 && i < 82) /*Traffic from south*/
+
+    i -= u_configs.traffic_from_north;
+    
+    /* traffic from south*/
+    if (i <= u_configs.traffic_from_south)
     {
-        return r_south_bound_routes[0];
+        return route_from_south();
     }
-    if (i > 82 && i <= 92)
+
+    i -= u_configs.traffic_from_south;
+
+    /* traffic from east */
+    if (i <= u_configs.traffic_from_east)
     {
-        i = rand() % 100 + 1;
-        if (i < 40)
-        {
-            return r_south_bound_routes[1];
-        }
-        if (i > 40 && i <= 80)
-        {
-            return r_north_bound_routes[1];
-        }
-        return r_west_bound_routes[2];
+        return route_from_east();
     }
-    else
+
+    else /* traffic from west */
     {
-        i = rand() % 100 + 1;
-        if (i <= 90)
-        {
-            return r_south_bound_routes[2];
-        }
-        return r_east_bound_routes[2];
+        return route_from_west();
     }
 }
 
-/* TODO: find a better way  */
+/* internal helper functions */
+Route route_from_north()
+{
+    return r_south_bound_routes[0];
+}
+
+Route route_from_south()
+{
+    utiny_i i = rand() % 100 + 1;
+    if (i <= 75)
+    {
+        return r_north_bound_routes[0];
+    }
+    if (i > 75 && i < 88)
+    {
+        return r_east_bound_routes[1];
+    }
+    return r_west_bound_routes[1];
+}
+
+Route route_from_west()
+{
+    utiny_i i = rand() % 100 + 1;
+    if (i < 40)
+    {
+        return r_south_bound_routes[1];
+    }
+    if (i > 40 && i <= 80)
+    {
+        return r_north_bound_routes[1];
+    }
+    return r_west_bound_routes[2];
+}
+
+Route route_from_east()
+{
+    utiny_i i = rand() % 100 + 1;
+    if (i <= 90)
+    {
+        return r_south_bound_routes[2];
+    }
+    return r_east_bound_routes[2];
+}
+
 Point *r_point_by_index(uint i)
 {
-    switch (i)
-    {
-    case 0:
-        return r_south_bound_routes[0].points[0];
-        break;
-    case 1:
-        return r_north_bound_routes[0].points[2];
-        break;
-    case 2:
-        return r_west_bound_routes[2].points[2];
-        break;
-    case 3:
-        return r_east_bound_routes[0].points[1];
-        break;
-    case 4:
-        return r_north_bound_routes[1].points[1];
-        break;
-    case 5:
-        return r_north_bound_routes[1].points[0];
-        break;
-    case 6:
-        return r_north_bound_routes[2].points[0];
-        break;
-    case 7:
-        return r_south_bound_routes[2].points[1];
-        break;
-    case 8:
-        return r_north_bound_routes[0].points[1];
-        break;
-    case 9:
-        return r_east_bound_routes[1].points[2];
-        break;
-    case 10:
-        return r_south_bound_routes[0].points[2];
-        break;
-    case 11:
-        return r_north_bound_routes[0].points[0];
-        break;
-    default:
-        return NULL;
-        break;
-    }
+    return r_all_points[i];
 }
 
 /* internal route allocation function */

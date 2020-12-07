@@ -20,6 +20,8 @@ typedef struct Route {
     char name[20];
 } Route;
 
+enum lights {red, green};
+
 #include "utility.h"
 
 void r_generate_points();

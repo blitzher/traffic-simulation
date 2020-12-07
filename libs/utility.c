@@ -83,7 +83,8 @@ void u_print_configs(Config con)
     printf("car-initial-speed: %f\n", con.car_initial_speed);
     printf("car-reaction-time: %d\n", con.car_reaction_time);
     printf("car-collision-detection-radius: %f\n", con.car_collision_detection_radius);
-    printf("point-free-radius: %f\n", con.point_free_radius);
+    printf("traffic-light-green: %d\n", con.traffic_light_green);
+    printf("traffic-light-red: %d\n", con.traffic_light_red);
     printf("weather: %d\n", con.weather);
     printf("sim-duration: %d\n", con.sim_duration);
     printf("amount-of-cars-simulated: %u\n", con.car_total_amount);
@@ -180,9 +181,11 @@ int u_load_configs(char *file_name, Config *out)
             {
                 out->car_collision_detection_radius = atof(value_string);
             }
-            else if (strcmp(name, "point-free-radius") == 0)
-            {
-                out->point_free_radius = atof(value_string);
+            else if (strcmp(name, "traffic-light-green") == 0) {
+                out->traffic_light_green = atoi(value_string);
+            }
+            else if (strcmp(name, "traffic-light-red") == 0) {
+                out->traffic_light_red = atoi(value_string);
             }
             else if (strcmp(name, "weather") == 0)
             {
@@ -257,7 +260,7 @@ int u_load_configs(char *file_name, Config *out)
 
 int u_compile_output(char *output_file)
 {
-    unsigned int total_visit = 0;
+    unsigned int total_visit = 0, total_wait_points = 0;
     uint i;
     FILE *fp;
     Point *point;
@@ -271,9 +274,12 @@ int u_compile_output(char *output_file)
         sprintf(line, "<x:%3d, y:%3d - visits:%4d, wait_points:%3d>\n",
                 point->x, point->y, point->visits, point->wait_points);
         total_visit += point->visits;
+        total_wait_points += point->wait_points;
         fputs(line, fp);
     }
     sprintf(line, "Sum of visits         :%5u\n", total_visit);
+    fputs(line, fp);
+    sprintf(line, "Sum of waitpoints     :%5u, avg : %f\n", total_wait_points, (float)total_wait_points/(float)u_configs.sim_duration);
     fputs(line, fp);
     fclose(fp);
     return 1;

@@ -8,11 +8,12 @@ utiny_i on_last_goal(Car *c);
 void move_car_toward_goal(uint index, Car *cars, Vector *);
 utiny_i check_goal(Car c);
 uint count_cars(Car *cars);
+void change_lights(uint);
 
 void s_run_simulation(Config config)
 {
-    int time;
-    int i;
+    uint time, i;
+    uint max_conc_cars = 0;
     Route goals;
 
     Car *current_car;
@@ -29,6 +30,11 @@ void s_run_simulation(Config config)
     /* run the simulation  */
     for (time = 0; time < config.sim_duration; time++)
     {
+
+        /* update the traffic lights, based on the current time */
+        change_lights(time);
+
+        max_conc_cars = count_cars(all_vehicles) > max_conc_cars ? count_cars(all_vehicles) : max_conc_cars;
 
         if (need_more_cars(cars_spawned, config.car_total_amount,
                            time, config.sim_duration))
@@ -47,7 +53,8 @@ void s_run_simulation(Config config)
             }
         }
 
-        /* For every car in the simulation, check goals and if its final goal. */
+        /* For every car in the simulation, find out
+         * where it should go */
         for (i = 0; i < MAX_VEHICLES; i++)
         {
             /* if car is dead, go to next car */
@@ -61,12 +68,6 @@ void s_run_simulation(Config config)
 
             /* TODO: handle concurrect collisions cleanly */
             move_car_toward_goal(i, all_vehicles, &upcoming_positions[i]);
-
-            /* Checking speed under 1, standstill occurs and increment wait_points. */
-            if (current_car->speed < 1)
-            {
-                current_goal->wait_points++;
-            }
 
             /* if car is adequately close to its current goal */
         }
@@ -84,7 +85,7 @@ void s_run_simulation(Config config)
 
             current_car->position = upcoming_positions[i];
 
-            if (u_distance_sqr(current_car->position, v_from_point(*current_goal)) < 12)
+            if (u_distance_sqr(current_car->position, v_from_point(*current_goal)) < 16)
             {
                 current_goal->visits++;
 
@@ -102,6 +103,13 @@ void s_run_simulation(Config config)
             }
         }
     }
+
+    if (DEBUG)
+    {
+        printf("max conc cars: %d\n", max_conc_cars);
+        printf("cars at end of sim: %d\n", count_cars(all_vehicles));
+    }
+
     /* frees allocated memory. */
     free(all_vehicles);
     free(upcoming_positions);
@@ -128,21 +136,17 @@ utiny_i on_last_goal(Car *c)
 utiny_i need_more_cars(uint curr_veh, uint total_veh,
                        uint curr_time, uint total_time)
 {
-    if (total_veh > curr_time)
-    {
-        return 1;
-    }
-    return 0;
-    /* float time_per_car = (float)total_time / (float)total_veh;
+    float time_per_car = (float)total_time / (float)total_veh;
     float veh_time = (float)curr_veh * time_per_car;
 
-    return curr_time > veh_time; */
+    return curr_time > veh_time;
 }
 
 /* internal helper function for sim */
 void move_car_toward_goal(uint index, Car *all_cars, Vector *output)
 {
     uint i;
+    double dist_to_goal;
     Car *car = &all_cars[index];
     Point *current_goal = car->route.points[car->goal_index];
 
@@ -158,6 +162,19 @@ void move_car_toward_goal(uint index, Car *all_cars, Vector *output)
 
     /* assign new position to car */
     Vector new_position = v_add(car->position, car_new_position);
+
+    /* check if upcoming traffic light is green */
+    if (car->goal_index == 1)
+    {
+        dist_to_goal = u_distance(car->position, v_from_point(*current_goal));
+
+        /* if light is red, and sufficiently close, stop */
+        
+        if (current_goal->light == red && dist_to_goal < 100)
+        {
+            new_position = car->position;
+        }
+    }
 
     /* Check all_vehicles current position for collision and
      * compare to current output vector. */
@@ -175,13 +192,18 @@ void move_car_toward_goal(uint index, Car *all_cars, Vector *output)
             break;
         }
     }
+
+    if (new_position.x == car->position.x && new_position.y == car->position.y){
+        current_goal->wait_points++;
+    }
+
     *output = new_position;
 }
 
 /* Counts and returns amount of alive cars. */
 uint count_cars(Car *cars)
 {
-    uint i, j;
+    uint i, j = 0;
     for (i = 0; i < MAX_VEHICLES; i++)
     {
         if (cars[i].init != 1)
@@ -190,4 +212,24 @@ uint count_cars(Car *cars)
         }
     }
     return MAX_VEHICLES - j;
+}
+
+void change_lights(uint time)
+{
+    uint light_period = u_configs.traffic_light_green + u_configs.traffic_light_red;
+    uint point_in_period = time % light_period;
+
+    /* light #3 and #8 */
+    if(point_in_period < u_configs.traffic_light_green) {
+        r_all_points[3]->light = 1;
+        r_all_points[8]->light = 1;
+        r_all_points[4]->light = 0;
+        r_all_points[7]->light = 0;
+    }
+    else {
+        r_all_points[3]->light = 0;
+        r_all_points[8]->light = 0;
+        r_all_points[4]->light = 1;
+        r_all_points[7]->light = 1;
+    }
 }

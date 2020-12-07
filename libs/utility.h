@@ -26,11 +26,6 @@ typedef struct Config
     uint car_total_amount;
     double car_collision_detection_radius;
 
-    double point_free_radius;
-    utiny_i weather;
-
-    int sim_duration;
-
     utiny_i traffic_from_south;
     utiny_i south_to_north;
     utiny_i south_to_east;
@@ -45,6 +40,11 @@ typedef struct Config
     utiny_i west_to_south;
     utiny_i west_to_east;
 
+    utiny_i traffic_light_green;
+    utiny_i traffic_light_red;
+
+    utiny_i weather;
+    int sim_duration;
 } Config;
 
 /* abstract class for a point
@@ -53,6 +53,7 @@ typedef struct Point
 {
     utiny_i x;
     utiny_i y;
+    utiny_i light;
     uint wait_points;
     uint visits;
 
