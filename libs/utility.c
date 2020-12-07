@@ -82,6 +82,7 @@ void u_print_configs(Config con)
     printf("car-max-acceleration: %f\n", con.car_acceleration);
     printf("car-initial-speed: %f\n", con.car_initial_speed);
     printf("car-reaction-time: %d\n", con.car_reaction_time);
+    printf("car-collision-detection-radius: %f\n", con.car_collision_detection_radius);
     printf("point-free-radius: %f\n", con.point_free_radius);
     printf("weather: %d\n", con.weather);
     printf("sim-duration: %d\n", con.sim_duration);
@@ -174,6 +175,10 @@ int u_load_configs(char *file_name, Config *out)
             else if (strcmp(name, "car-total-amount") == 0)
             {
                 out->car_total_amount = atoi(value_string);
+            }
+            else if (strcmp(name, "car-collision-detection-radius") == 0)
+            {
+                out->car_collision_detection_radius = atof(value_string);
             }
             else if (strcmp(name, "point-free-radius") == 0)
             {
