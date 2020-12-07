@@ -30,6 +30,20 @@ typedef struct Config
 
     int sim_duration;
 
+    utiny_i traffic_from_south;
+    utiny_i south_to_north;
+    utiny_i south_to_east;
+    utiny_i south_to_west;
+    utiny_i traffic_from_north;
+    utiny_i north_to_south;
+    utiny_i traffic_from_east;
+    utiny_i east_to_south;
+    utiny_i east_to_north;
+    utiny_i east_to_west;
+    utiny_i traffic_from_west;
+    utiny_i west_to_south;
+    utiny_i west_to_east;
+
 } Config;
 
 /* abstract class for a point

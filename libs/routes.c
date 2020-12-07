@@ -150,10 +150,10 @@ void r_generate_routes()
 Route r_random_route()
 {
     int i;
-    i = rand() % 101;
+    i = rand() % 100 + 1;
     if (i <= 44) /*Traffic from south*/
     {
-        i = rand() % 101;
+        i = rand() % 100 + 1;
         if (i <= 75)
         {
             return r_north_bound_routes[0];
@@ -170,7 +170,7 @@ Route r_random_route()
     }
     if (i > 82 && i <= 92)
     {
-        i = rand() % 101;
+        i = rand() % 100 + 1;
         if (i < 40)
         {
             return r_south_bound_routes[1];
@@ -183,7 +183,7 @@ Route r_random_route()
     }
     else
     {
-        i = rand() % 101;
+        i = rand() % 100 + 1;
         if (i <= 90)
         {
             return r_south_bound_routes[2];

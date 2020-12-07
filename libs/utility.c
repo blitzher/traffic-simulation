@@ -85,7 +85,11 @@ void u_print_configs(Config con)
     printf("point-free-radius: %f\n", con.point_free_radius);
     printf("weather: %d\n", con.weather);
     printf("sim-duration: %d\n", con.sim_duration);
-    printf("Amount of cars simulated: %u", con.car_total_amount);
+    printf("amount-of-cars-simulated: %u\n", con.car_total_amount);
+    printf("chance-of-traffic-from-north: %u\n", con.traffic_from_north);
+    printf("chance-of-traffic-from-south: %u\n", con.traffic_from_south);
+    printf("chance-of-traffic-from-east: %3u\n", con.traffic_from_east);
+    printf("chance-of-traffic-from-west: %3u\n", con.traffic_from_west);
 }
 void u_print_vector(Vector *vec)
 {
@@ -182,6 +186,58 @@ int u_load_configs(char *file_name, Config *out)
             else if (strcmp(name, "sim-duration") == 0)
             {
                 out->sim_duration = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-traffic-from-south") == 0)
+            {
+                out->traffic_from_south = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-south-to-north") == 0)
+            {
+                out->south_to_north = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-south-to-east") == 0)
+            {
+                out->south_to_east = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-south-to-west") == 0)
+            {
+                out->south_to_west = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-traffic-from-north") == 0)
+            {
+                out->traffic_from_north = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-north-to-south") == 0)
+            {
+                out->north_to_south = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-traffic-from-east") == 0)
+            {
+                out->traffic_from_east = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-east-to-south") == 0)
+            {
+                out->east_to_south = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-east-to-north") == 0)
+            {
+                out->east_to_north = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-east-to-west") == 0)
+            {
+                out->east_to_west = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-traffic-from-west") == 0)
+            {
+                out->traffic_from_west = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-west-to-south") == 0)
+            {
+                out->west_to_south = atoi(value_string);
+            }
+            else if (strcmp(name, "chance-of-west-to-east") == 0)
+            {
+                out->west_to_east = atoi(value_string);
             }
             else
             {
