@@ -24,6 +24,7 @@ typedef struct Config
     utiny_i car_reaction_time;
     double car_initial_speed;
     uint car_total_amount;
+    double car_collision_detection_radius;
 
     double point_free_radius;
     utiny_i weather;
