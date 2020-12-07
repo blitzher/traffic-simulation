@@ -83,7 +83,8 @@ void r_generate_routes()
     west_to_south.points[1] = r_all_points[7];
     west_to_south.points[2] = r_all_points[10];
     west_to_south.points[3] = u_new_point(-1, -1);
-    west_to_south.points[3]->init = 0;;
+    west_to_south.points[3]->init = 0;
+    ;
     east_to_south.points[0] = r_all_points[5];
     east_to_south.points[1] = r_all_points[4];
     east_to_south.points[2] = r_all_points[7];
@@ -127,7 +128,7 @@ void r_generate_routes()
     /* generate routes heading to north */
     r_north_bound_routes[0] = south_to_north;
     r_north_bound_routes[1] = east_to_north;
-    r_north_bound_routes[2] = west_to_north;
+    r_north_bound_routes[2] = west_to_north; /*Cannot drive here*/
 
     /* generate routes heading to south */
     r_south_bound_routes[0] = north_to_south;
@@ -135,12 +136,12 @@ void r_generate_routes()
     r_south_bound_routes[2] = west_to_south;
 
     /* generate routes heading to east */
-    r_east_bound_routes[0] = north_to_east;
+    r_east_bound_routes[0] = north_to_east; /*Cannot drive here*/
     r_east_bound_routes[1] = south_to_east;
     r_east_bound_routes[2] = west_to_east;
 
     /* generate routes heading to west */
-    r_west_bound_routes[0] = north_to_west;
+    r_west_bound_routes[0] = north_to_west; /*Cannot drive here*/
     r_west_bound_routes[1] = south_to_west;
     r_west_bound_routes[2] = east_to_west;
     printf("assembled routes...\n");
@@ -148,20 +149,46 @@ void r_generate_routes()
 
 Route r_random_route()
 {
-    switch (rand() % 4)
+    int i;
+    i = rand() % 101;
+    if (i <= 44) /*Traffic from south*/
     {
-    case 0:
-        return r_north_bound_routes[rand() % 3];
-        break;
-    case 1:
-        return r_south_bound_routes[rand() % 3];
-        break;
-    case 2:
-        return r_east_bound_routes[rand() % 3];
-        break;
-    case 3: default: 
-        return r_west_bound_routes[rand() % 3];
-        break;
+        i = rand() % 101;
+        if (i <= 75)
+        {
+            return r_north_bound_routes[0];
+        }
+        if (i > 75 && i < 88)
+        {
+            return r_east_bound_routes[1];
+        }
+        return r_west_bound_routes[1];
+    }
+    if (i > 44 && i < 82) /*Traffic from south*/
+    {
+        return r_south_bound_routes[0];
+    }
+    if (i > 82 && i <= 92)
+    {
+        i = rand() % 101;
+        if (i < 40)
+        {
+            return r_south_bound_routes[1];
+        }
+        if (i > 40 && i <= 80)
+        {
+            return r_north_bound_routes[1];
+        }
+        return r_west_bound_routes[2];
+    }
+    else
+    {
+        i = rand() % 101;
+        if (i <= 90)
+        {
+            return r_south_bound_routes[2];
+        }
+        return r_east_bound_routes[2];
     }
 }
 
