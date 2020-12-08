@@ -39,6 +39,7 @@ typedef struct Config
     utiny_i traffic_from_west;
     utiny_i west_to_south;
     utiny_i west_to_east;
+    utiny_i west_to_north;
 
     utiny_i traffic_light_green;
     utiny_i traffic_light_red;

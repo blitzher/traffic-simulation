@@ -181,10 +181,12 @@ int u_load_configs(char *file_name, Config *out)
             {
                 out->car_collision_detection_radius = atof(value_string);
             }
-            else if (strcmp(name, "traffic-light-green") == 0) {
+            else if (strcmp(name, "traffic-light-green") == 0)
+            {
                 out->traffic_light_green = atoi(value_string);
             }
-            else if (strcmp(name, "traffic-light-red") == 0) {
+            else if (strcmp(name, "traffic-light-red") == 0)
+            {
                 out->traffic_light_red = atoi(value_string);
             }
             else if (strcmp(name, "weather") == 0)
@@ -247,6 +249,10 @@ int u_load_configs(char *file_name, Config *out)
             {
                 out->west_to_east = atoi(value_string);
             }
+            else if (strcmp(name, "chance-of-west-to-north") == 0)
+            {
+                out->west_to_north = atoi(value_string);
+            }
             else
             {
                 printf("unaccounted config: %s\n", name);
@@ -279,7 +285,7 @@ int u_compile_output(char *output_file)
     }
     sprintf(line, "Sum of visits         :%5u\n", total_visit);
     fputs(line, fp);
-    sprintf(line, "Sum of waitpoints     :%5u, avg : %f\n", total_wait_points, (float)total_wait_points/(float)u_configs.sim_duration);
+    sprintf(line, "Sum of waitpoints     :%5u, avg : %f\n", total_wait_points, (float)total_wait_points / (float)u_configs.sim_duration);
     fputs(line, fp);
     fclose(fp);
     return 1;
