@@ -88,7 +88,6 @@ void r_generate_routes()
     west_to_south.points[2] = r_all_points[10];
     west_to_south.points[3] = u_new_point(-1, -1);
     west_to_south.points[3]->init = 0;
-    ;
     east_to_south.points[0] = r_all_points[5];
     east_to_south.points[1] = r_all_points[4];
     east_to_south.points[2] = r_all_points[7];
