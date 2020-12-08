@@ -104,11 +104,9 @@ void s_run_simulation(Config config)
         }
     }
 
-    if (DEBUG)
-    {
-        printf("max conc cars: %d\n", max_conc_cars);
-        printf("cars at end of sim: %d\n", count_cars(all_vehicles));
-    }
+    u_configs.o_conc_cars = max_conc_cars;
+    /* printf("max conc cars: %d\n", max_conc_cars); */
+    printf("cars at end of sim: %d\n", count_cars(all_vehicles));
 
     /* frees allocated memory. */
     free(all_vehicles);

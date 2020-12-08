@@ -278,6 +278,8 @@ int u_compile_output(char *output_file, char* config_name)
     fputs(line, fp);
     sprintf(line, "Sum of waitpoints     :%5u, avg : %f\n", total_wait_points, (float)total_wait_points / (float)u_configs.sim_duration);
     fputs(line, fp);
+    sprintf(line, "Max concurrent cars   :%5u", u_configs.o_conc_cars);
+    fputs(line, fp);
     fclose(fp);
     return 1;
 }

@@ -44,6 +44,10 @@ typedef struct Config
     utiny_i traffic_light_red;
 
     int sim_duration;
+
+    /* output parameters from sim */
+    uint o_conc_cars;
+
 } Config;
 
 /* abstract class for a point
