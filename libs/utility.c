@@ -47,7 +47,6 @@ Car u_new_car(Route route)
     c.route.points[0]->visits++;
     c.goal_index = 1;
     /* load relevant information from config struct */
-    c.reaction_time = u_configs.car_reaction_time;
     c.speed = u_configs.car_initial_speed;
     /* has been properly initialised */
     c.init = 1;
@@ -81,11 +80,9 @@ void u_print_configs(Config con)
     printf("Configurations:\n");
     printf("car-max-acceleration: %f\n", con.car_acceleration);
     printf("car-initial-speed: %f\n", con.car_initial_speed);
-    printf("car-reaction-time: %d\n", con.car_reaction_time);
     printf("car-collision-detection-radius: %f\n", con.car_collision_detection_radius);
     printf("traffic-light-green: %d\n", con.traffic_light_green);
     printf("traffic-light-red: %d\n", con.traffic_light_red);
-    printf("weather: %d\n", con.weather);
     printf("sim-duration: %d\n", con.sim_duration);
     printf("amount-of-cars-simulated: %u\n", con.car_total_amount);
     printf("chance-of-traffic-from-north: %u\n", con.traffic_from_north);
@@ -169,10 +166,6 @@ int u_load_configs(char *file_name, Config *out)
             {
                 out->car_initial_speed = atof(value_string);
             }
-            else if (strcmp(name, "car-reaction-time") == 0)
-            {
-                out->car_reaction_time = atoi(value_string);
-            }
             else if (strcmp(name, "car-total-amount") == 0)
             {
                 out->car_total_amount = atoi(value_string);
@@ -188,10 +181,6 @@ int u_load_configs(char *file_name, Config *out)
             else if (strcmp(name, "traffic-light-red") == 0)
             {
                 out->traffic_light_red = atoi(value_string);
-            }
-            else if (strcmp(name, "weather") == 0)
-            {
-                out->weather = atoi(value_string);
             }
             else if (strcmp(name, "sim-duration") == 0)
             {

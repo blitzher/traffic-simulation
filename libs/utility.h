@@ -21,7 +21,6 @@ typedef unsigned char utiny_i;
 typedef struct Config
 {
     double car_acceleration;
-    utiny_i car_reaction_time;
     double car_initial_speed;
     uint car_total_amount;
     double car_collision_detection_radius;
@@ -43,8 +42,7 @@ typedef struct Config
 
     utiny_i traffic_light_green;
     utiny_i traffic_light_red;
-
-    utiny_i weather;
+    
     int sim_duration;
 } Config;
 
