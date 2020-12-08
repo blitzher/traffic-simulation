@@ -15,12 +15,6 @@ typedef struct Vector
 /* generate a new vector from two coordinates */
 Vector v_new_vector(double x, double y);
 
-/* compute the dot product between two vectors  */
-double v_dotp(Vector vec_a, Vector vec_b);
-
-/* calculate the crossproduct of 2 vectors */
-double v_crossproduct(Vector vec_a, Vector vec_b);
-
 /* compute the angle between two vectors */
 double v_angle_between(Vector vec_a, Vector vec_b);
 
