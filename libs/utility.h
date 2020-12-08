@@ -42,7 +42,7 @@ typedef struct Config
 
     utiny_i traffic_light_green;
     utiny_i traffic_light_red;
-    
+
     int sim_duration;
 } Config;
 
@@ -115,7 +115,7 @@ void u_print_vector(Vector *);
 void u_print_configs(Config);
 /* compile information from point variables into
  * an output file  */
-int u_compile_output(char *output_file);
+int u_compile_output(char *output_file, char* config_name);
 
 /* Print function for vector */
 void u_print_crossproduct(Vector, Vector);

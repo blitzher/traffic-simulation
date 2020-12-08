@@ -253,7 +253,7 @@ int u_load_configs(char *file_name, Config *out)
     return 1;
 }
 
-int u_compile_output(char *output_file)
+int u_compile_output(char *output_file, char* config_name)
 {
     unsigned int total_visit = 0, total_wait_points = 0;
     uint i;
@@ -262,6 +262,8 @@ int u_compile_output(char *output_file)
     char line[80];
 
     fp = fopen(output_file, "w");
+    sprintf(line, "%s\n", config_name);
+    fputs(line, fp);
     /* iterate over all points */
     for (i = 0; i < TOTAL_POINTS; i++)
     {

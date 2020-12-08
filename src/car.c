@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 
     s_run_simulation(u_configs);
 
-    u_compile_output(".output");
+    u_compile_output(".output", argv[1]);
 
     c_printf("simulation terminated succesfully\n", BLU);
 
