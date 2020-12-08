@@ -181,10 +181,12 @@ int u_load_configs(char *file_name, Config *out)
             {
                 out->car_collision_detection_radius = atof(value_string);
             }
-            else if (strcmp(name, "traffic-light-green") == 0) {
+            else if (strcmp(name, "traffic-light-green") == 0)
+            {
                 out->traffic_light_green = atoi(value_string);
             }
-            else if (strcmp(name, "traffic-light-red") == 0) {
+            else if (strcmp(name, "traffic-light-red") == 0)
+            {
                 out->traffic_light_red = atoi(value_string);
             }
             else if (strcmp(name, "weather") == 0)
@@ -271,21 +273,16 @@ int u_compile_output(char *output_file)
     for (i = 0; i < TOTAL_POINTS; i++)
     {
         point = r_point_by_index(i);
-        sprintf(line, "<x:%3d, y:%3d - visits:%4d, wait_points:%3d>\n",
-                point->x, point->y, point->visits, point->wait_points);
+        sprintf(line, "point:%2d <x:%3d, y:%3d - visits:%5d, wait_points:%5d>\n",
+                i, point->x, point->y, point->visits, point->wait_points);
         total_visit += point->visits;
         total_wait_points += point->wait_points;
         fputs(line, fp);
     }
     sprintf(line, "Sum of visits         :%5u\n", total_visit);
     fputs(line, fp);
-    sprintf(line, "Sum of waitpoints     :%5u, avg : %f\n", total_wait_points, (float)total_wait_points/(float)u_configs.sim_duration);
+    sprintf(line, "Sum of waitpoints     :%5u, avg : %f\n", total_wait_points, (float)total_wait_points / (float)u_configs.sim_duration);
     fputs(line, fp);
     fclose(fp);
     return 1;
-}
-
-void u_print_crossproduct(Vector vec_a, Vector vec_b)
-{
-    printf("The vectors %s, parallel \n", v_check_if_parallel(vec_a, vec_b) ? "is" : "is not");
 }
