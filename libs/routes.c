@@ -192,11 +192,12 @@ Route route_from_north()
 Route route_from_south()
 {
     utiny_i i = rand() % 100 + 1;
-    if (i <= 75)
+    if (i <= u_configs.south_to_north)
     {
         return r_north_bound_routes[0];
     }
-    if (i > 75 && i < 88)
+    i -= u_configs.south_to_north;
+    if (i <= u_configs.south_to_east)
     {
         return r_east_bound_routes[1];
     }
@@ -206,11 +207,12 @@ Route route_from_south()
 Route route_from_west()
 {
     utiny_i i = rand() % 100 + 1;
-    if (i < 40)
+    if (i <= u_configs.west_to_south)
     {
         return r_south_bound_routes[1];
     }
-    if (i > 40 && i <= 80)
+    i -= u_configs.west_to_south;
+    if (i <= u_configs.west_to_north)
     {
         return r_north_bound_routes[1];
     }
@@ -220,7 +222,7 @@ Route route_from_west()
 Route route_from_east()
 {
     utiny_i i = rand() % 100 + 1;
-    if (i <= 90)
+    if (i <= u_configs.east_to_south)
     {
         return r_south_bound_routes[2];
     }
