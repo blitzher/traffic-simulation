@@ -3,7 +3,13 @@
 #include "../libs/routes.h"
 #include "../libs/colours.h"
 #include "../libs/simulation.h"
-int main(void)
+
+/* 
+ * argc: argument count
+ * argv: argument values
+ */
+
+int main(int argc, char **argv)
 {
     srand(time(NULL));
     /*WIP.*/
@@ -11,11 +17,18 @@ int main(void)
     r_generate_points();
     r_generate_routes();
 
-    u_load_configs(".config", &u_configs);
+    if (argc > 1)
+    {
+        u_load_configs(argv[1], &u_configs);
+    }
+    else
+    {
+        u_load_configs(".config", &u_configs);
+    }
 
     s_run_simulation(u_configs);
 
-    u_compile_output(".output");
+    u_compile_output(".output", argv[1]);
 
     c_printf("simulation terminated succesfully\n", BLU);
 

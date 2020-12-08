@@ -21,7 +21,6 @@ typedef unsigned char utiny_i;
 typedef struct Config
 {
     double car_acceleration;
-    utiny_i car_reaction_time;
     double car_initial_speed;
     uint car_total_amount;
     double car_collision_detection_radius;
@@ -39,11 +38,11 @@ typedef struct Config
     utiny_i traffic_from_west;
     utiny_i west_to_south;
     utiny_i west_to_east;
+    utiny_i west_to_north;
 
     utiny_i traffic_light_green;
     utiny_i traffic_light_red;
 
-    utiny_i weather;
     int sim_duration;
 } Config;
 
@@ -116,7 +115,7 @@ void u_print_vector(Vector *);
 void u_print_configs(Config);
 /* compile information from point variables into
  * an output file  */
-int u_compile_output(char *output_file);
+int u_compile_output(char *output_file, char* config_name);
 
 /* Print function for vector */
 void u_print_crossproduct(Vector, Vector);

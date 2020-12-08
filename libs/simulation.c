@@ -169,7 +169,7 @@ void move_car_toward_goal(uint index, Car *all_cars, Vector *output)
         dist_to_goal = u_distance(car->position, v_from_point(*current_goal));
 
         /* if light is red, and sufficiently close, stop */
-        
+
         if (current_goal->light == red && dist_to_goal < 100)
         {
             new_position = car->position;
@@ -193,7 +193,8 @@ void move_car_toward_goal(uint index, Car *all_cars, Vector *output)
         }
     }
 
-    if (new_position.x == car->position.x && new_position.y == car->position.y){
+    if (new_position.x == car->position.x && new_position.y == car->position.y)
+    {
         current_goal->wait_points++;
     }
 
@@ -220,13 +221,15 @@ void change_lights(uint time)
     uint point_in_period = time % light_period;
 
     /* light #3 and #8 */
-    if(point_in_period < u_configs.traffic_light_green) {
+    if (point_in_period < u_configs.traffic_light_green)
+    {
         r_all_points[3]->light = 1;
         r_all_points[8]->light = 1;
         r_all_points[4]->light = 0;
         r_all_points[7]->light = 0;
     }
-    else {
+    else
+    {
         r_all_points[3]->light = 0;
         r_all_points[8]->light = 0;
         r_all_points[4]->light = 1;
