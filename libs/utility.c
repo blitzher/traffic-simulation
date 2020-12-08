@@ -179,13 +179,6 @@ int u_load_configs(char *file_name, Config *out)
                 out->traffic_light_green = atoi(value_string);
             }
             else if (strcmp(name, "traffic-light-red") == 0)
-<<<<<<< HEAD
-            {
-                out->traffic_light_red = atoi(value_string);
-            }
-            else if (strcmp(name, "weather") == 0)
-=======
->>>>>>> 31b7d238807cb08beac056eea0e1e8faca7920cb
             {
                 out->traffic_light_red = atoi(value_string);
             }
@@ -260,7 +253,7 @@ int u_load_configs(char *file_name, Config *out)
     return 1;
 }
 
-int u_compile_output(char *output_file, char* config_name)
+int u_compile_output(char *output_file, char *config_name)
 {
     unsigned int total_visit = 0, total_wait_points = 0;
     uint i;

@@ -5,28 +5,13 @@
 #include "colours.h"
 #include "utility.h"
 
-Vector v_new_vector(double x, double y) {
+Vector v_new_vector(double x, double y)
+{
     Vector out;
     out.x = x;
     out.y = y;
 
     return out;
-}
-
-double v_check_if_parallel(Vector vec_a, Vector vec_b)
-{
-    return (v_crossproduct(vec_a, vec_b) == 0);
-}
-
-double v_crossproduct(Vector vec_a, Vector vec_b)
-{
-    if ((vec_a.x == 0 && vec_a.y == 0) || (vec_b.x == 0 && vec_b.y == 0))
-    {
-        c_printf("Warning: ", MAG);
-        printf("you are trying to calculate the crossproduct with a 0 vector!\n");
-    }
-
-    return vec_a.x * vec_b.y - vec_a.y * vec_b.x;
 }
 
 double v_magnitude(Vector vec_a)
