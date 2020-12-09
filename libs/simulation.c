@@ -5,7 +5,7 @@
 /* internal helper function for sim */
 utiny_i need_more_cars();
 utiny_i on_last_goal(Car *c);
-void move_car_toward_goal(uint index, Car *cars, Vector *);
+void calculate_car_position(uint index, Car *cars, Vector *);
 utiny_i check_goal(Car c);
 uint count_cars(Car *cars);
 void change_lights(uint);
@@ -67,9 +67,7 @@ void s_run_simulation(Config config)
             current_goal = current_car->route.points[current_car->goal_index];
 
             /* TODO: handle concurrect collisions cleanly */
-            move_car_toward_goal(i, all_vehicles, &upcoming_positions[i]);
-
-            /* if car is adequately close to its current goal */
+            calculate_car_position(i, all_vehicles, &upcoming_positions[i]);
         }
 
         /* Move every car according to its newfound position */
@@ -104,9 +102,12 @@ void s_run_simulation(Config config)
         }
     }
 
-    u_configs.o_conc_cars = max_conc_cars;
-    /* printf("max conc cars: %d\n", max_conc_cars); */
-    printf("cars at end of sim: %d\n", count_cars(all_vehicles));
+
+    if (DEBUG)
+    {
+        printf("max conc cars: %d\n", max_conc_cars);
+        printf("cars at end of sim: %d\n", count_cars(all_vehicles));
+    }
 
     /* frees allocated memory. */
     free(all_vehicles);
@@ -141,7 +142,7 @@ utiny_i need_more_cars(uint curr_veh, uint total_veh,
 }
 
 /* internal helper function for sim */
-void move_car_toward_goal(uint index, Car *all_cars, Vector *output)
+void calculate_car_position(uint index, Car *all_cars, Vector *output)
 {
     uint i;
     double dist_to_goal;
