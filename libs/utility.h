@@ -47,6 +47,7 @@ typedef struct Config
 
     /* output parameters from sim */
     uint o_conc_cars;
+    uint o_total_vehicle_age;
 
 } Config;
 
@@ -80,6 +81,7 @@ typedef struct Car
     double speed;
     double desired_speed;
     double reaction_time;
+    ushort age;
 
     /* wether or not the car has been
      * properly initialised to a variable */

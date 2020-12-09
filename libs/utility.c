@@ -46,6 +46,7 @@ Car u_new_car(Route route)
     c.route = route;
     c.route.points[0]->visits++;
     c.goal_index = 1;
+    c.age = 0;
     /* load relevant information from config struct */
     c.speed = u_configs.car_initial_speed;
     /* has been properly initialised */
@@ -274,11 +275,17 @@ int u_compile_output(char *output_file, char *config_name)
         total_wait_points += point->wait_points;
         fputs(line, fp);
     }
+    sprintf(line, "Amount of cars        :%5d\n", u_configs.car_total_amount);
+    fputs(line, fp);
     sprintf(line, "Sum of visits         :%5u\n", total_visit);
     fputs(line, fp);
-    sprintf(line, "Sum of waitpoints     :%5u, avg : %f\n", total_wait_points, (float)total_wait_points / (float)u_configs.sim_duration);
+    sprintf(line, "Sum of waitpoints     :%5u, avg : %5f\n",
+            total_wait_points, (float)total_wait_points / (float)u_configs.sim_duration);
     fputs(line, fp);
-    sprintf(line, "Max concurrent cars   :%5u", u_configs.o_conc_cars);
+    sprintf(line, "Max concurrent cars   :%5u\n", u_configs.o_conc_cars);
+    fputs(line, fp);
+    sprintf(line, "Average car age       :%6.2f iterations\n",
+    (float)u_configs.o_total_vehicle_age/(float)u_configs.car_total_amount);
     fputs(line, fp);
     fclose(fp);
     return 1;

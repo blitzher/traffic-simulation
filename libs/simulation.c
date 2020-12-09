@@ -14,6 +14,7 @@ void s_run_simulation(Config config)
 {
     uint time, i;
     uint max_conc_cars = 0;
+    uint total_vehicle_age = 0;
     Route goals;
 
     Car *current_car;
@@ -66,8 +67,8 @@ void s_run_simulation(Config config)
             current_car = &all_vehicles[i];
             current_goal = current_car->route.points[current_car->goal_index];
 
-            /* TODO: handle concurrect collisions cleanly */
             move_car_toward_goal(i, all_vehicles, &upcoming_positions[i]);
+            current_car->age++;
 
             /* if car is adequately close to its current goal */
         }
@@ -94,6 +95,7 @@ void s_run_simulation(Config config)
                 {
                     /* car go die and gets replaced. */
                     current_car->init = 0;
+                    total_vehicle_age += current_car->age;
                 }
                 else
                 {
@@ -105,6 +107,7 @@ void s_run_simulation(Config config)
     }
 
     u_configs.o_conc_cars = max_conc_cars;
+    u_configs.o_total_vehicle_age = total_vehicle_age;
     /* printf("max conc cars: %d\n", max_conc_cars); */
     printf("cars at end of sim: %d\n", count_cars(all_vehicles));
 
