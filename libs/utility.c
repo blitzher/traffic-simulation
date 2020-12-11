@@ -5,8 +5,11 @@
 #include <stdlib.h>
 #include "utility.h"
 #include "routes.h"
+#include "colours.h"
 
 #define MAX_LINE_LENGTH 80
+
+void sanitise_config(Config);
 
 Config u_configs;
 
@@ -80,9 +83,8 @@ void u_print_route(Route route)
 void u_print_configs(Config con)
 {
     printf("Configurations:\n");
-    printf("car-max-acceleration: %f\n", con.car_acceleration);
     printf("car-initial-speed: %f\n", con.car_initial_speed);
-    printf("car-collision-detection-radius: %f\n", con.car_collision_detection_radius);
+    printf("point-radius: %f\n", con.point_radius);
     printf("traffic-light-green: %d\n", con.traffic_light_green);
     printf("traffic-light-red: %d\n", con.traffic_light_red);
     printf("sim-duration: %d\n", con.sim_duration);
@@ -160,11 +162,7 @@ int u_load_configs(char *file_name, Config *out)
             value_string[value_end - name_end - 1] = '\0';
 
             /* implement configurations into output struct */
-            if (strcmp(name, "car-acceleration") == 0)
-            {
-                out->car_acceleration = atof(value_string);
-            }
-            else if (strcmp(name, "car-initial-speed") == 0)
+            if (strcmp(name, "car-initial-speed") == 0)
             {
                 out->car_initial_speed = atof(value_string);
             }
@@ -172,9 +170,12 @@ int u_load_configs(char *file_name, Config *out)
             {
                 out->car_total_amount = atoi(value_string);
             }
-            else if (strcmp(name, "car-collision-detection-radius") == 0)
+            else if (strcmp(name, "point-radius") == 0)
             {
-                out->car_collision_detection_radius = atof(value_string);
+                out->point_radius = atof(value_string);
+                /* also store the squared radius, for improved
+                 * collision detection efficiency */
+                out->point_radius_sqr = pow(atof(value_string), 2);
             }
             else if (strcmp(name, "traffic-light-green") == 0)
             {
@@ -255,6 +256,11 @@ int u_load_configs(char *file_name, Config *out)
     }
 
     fclose(fp);
+
+    /* after loading config into struct,
+     * validate that config data is valid */
+    sanitise_config(*out);
+
     return 1;
 }
 
@@ -269,6 +275,10 @@ int u_compile_output(char *output_file, char *config_name)
     fp = fopen(output_file, "w");
     sprintf(line, "config name: %s\n", config_name);
     fputs(line, fp);
+
+    sprintf(line, "\npositions of points:\n\t\t0 1\n\n\t2   3 4   5\n\t6   7 8   9\n\n\t   10 11\n\n");
+    fputs(line, fp);
+
     /* iterate over all points */
     for (i = 0; i < TOTAL_POINTS; i++)
     {
@@ -294,3 +304,69 @@ int u_compile_output(char *output_file, char *config_name)
     fclose(fp);
     return 1;
 }
+
+void sanitise_config(Config config)
+{
+    int sum, throw_flag = 0;
+    /* can only summon 1 car per frame */
+    if (config.sim_duration < config.car_total_amount)
+    {
+        warn("( ) too many cars for simulation duration!\n");
+    }
+
+    /* check that origin percentages add up to 100 */
+    sum = config.traffic_from_north +
+          config.traffic_from_south +
+          config.traffic_from_west +
+          config.traffic_from_east;
+
+    if (sum != 100)
+    {
+        warn("(*) traffic from different directions do not add up to 100%%!\n");
+        throw_flag = 1;
+    }
+
+    /* north can only go south, so should always be 100% */
+    if (config.north_to_south != 100)
+    {
+        warn("(*) traffic from north to south is not 100!\n");
+        throw_flag = 1;
+    }
+
+    /* all traffic from south should add up to 100% */
+    sum = config.south_to_east +
+          config.south_to_north +
+          config.south_to_west;
+
+    if (sum != 100)
+    {
+        warn("(*) traffic from south does not add up to 100%%!\n");
+        throw_flag = 1;
+    }
+
+    /* all traffic from east should add up to 100% */
+    sum = config.east_to_north +
+          config.east_to_south +
+          config.east_to_west;
+
+    if (sum != 100)
+    {
+        warn("(*) traffic from east does not add up to 100%%!\n");
+        throw_flag = 1;
+    }
+
+    /* all traffic from west should add up to 100% */
+    sum = config.west_to_east +
+          config.west_to_north +
+          config.west_to_south;
+
+    if (sum != 100)
+    {
+        warn("(*) traffic from west does not add up to 100%%!\n");
+        throw_flag = 1;
+    }
+
+    if (throw_flag) {
+        error("    one or more critical warnings are unsolved!\n");
+    }
+}   

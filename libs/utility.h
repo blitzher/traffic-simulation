@@ -20,10 +20,10 @@ typedef unsigned char utiny_i;
  * useful for serialization of simulations */
 typedef struct Config
 {
-    double car_acceleration;
     double car_initial_speed;
     uint car_total_amount;
-    double car_collision_detection_radius;
+    double point_radius;
+    double point_radius_sqr;
 
     utiny_i traffic_from_south;
     utiny_i south_to_north;

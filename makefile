@@ -1,6 +1,6 @@
 # setup variables
 CC = gcc
-CFLAGS = -ansi -pedantic -Wall -O1
+CFLAGS = -ansi -pedantic -Wall
 COMP = $(CC) $(CFLAGS)
 LIB = libs
 TEMP = temp

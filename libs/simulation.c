@@ -1,5 +1,6 @@
 #include "simulation.h"
 #include "string.h"
+#include "colours.h"
 #define MAX_VEHICLES 1000
 
 #define COL_DET 4
@@ -28,7 +29,7 @@ void s_run_simulation(Config config)
     Car *all_vehicles = (Car *)malloc(sizeof(Car) * MAX_VEHICLES);
 
     if (DEBUG) { u_print_configs(config); }
-    printf("\nrunning simulation...\n\n");
+    c_printf("\nrunning simulation...\n\n", YEL);
 
     /* make into function for refinement? */
     /* run the simulation  */
@@ -228,7 +229,8 @@ utiny_i is_valid_position(uint index, Vector *pos, Car *all_cars)
             continue;
         }
 
-        if (u_distance_sqr(next_position, all_cars[i].position) < u_configs.car_collision_detection_radius)
+        /* here we explicitly use distance squared for performance reasons */
+        if (u_distance_sqr(next_position, all_cars[i].position) < u_configs.point_radius_sqr)
         {
             return 0;
             break;

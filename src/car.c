@@ -29,18 +29,13 @@ int main(int argc, char **argv)
         u_load_configs(".config", &u_configs);
     }
 
-    if (u_configs.sim_duration < u_configs.car_total_amount) {
-        warn("too many cars for simulation duration!\n");
-        error("too many cars for simulation duration!\n");
-    }
-
     /* timing */
     start = clock();
     s_run_simulation(u_configs);
     diff = clock() - start;
     msec = diff * 1000 / CLOCKS_PER_SEC;
 
-    c_printf("Time taken %d seconds %d milliseconds\n", GRN, msec/1000, msec%1000);
+    c_printf("simulation time: %ds %dms\n", GRN, msec/1000, msec%1000);
 
     u_compile_output(".output", argv[1]);
 
