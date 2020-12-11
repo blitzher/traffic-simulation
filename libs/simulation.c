@@ -2,10 +2,13 @@
 #include "string.h"
 #define MAX_VEHICLES 1000
 
+#define COL_DET 4
+
 /* internal helper function for sim */
-utiny_i need_more_cars();
 utiny_i on_last_goal(Car *c);
+utiny_i need_more_cars();
 void calculate_car_position(uint index, Car *cars, Vector *);
+utiny_i is_valid_position(uint index, Vector *pos, Car *all_cars);
 utiny_i check_goal(Car c);
 uint count_cars(Car *cars);
 void change_lights(uint);
@@ -40,7 +43,6 @@ void s_run_simulation(Config config)
         if (need_more_cars(cars_spawned, config.car_total_amount,
                            time, config.sim_duration))
         {
-            /* TODO: Make dynamic route system */
             goals = r_random_route();
 
             for (i = 0; i < MAX_VEHICLES; i++)
@@ -58,6 +60,7 @@ void s_run_simulation(Config config)
          * where it should go */
         for (i = 0; i < MAX_VEHICLES; i++)
         {
+
             /* if car is dead, go to next car */
             if (all_vehicles[i].init != 1)
             {
@@ -67,7 +70,24 @@ void s_run_simulation(Config config)
             current_car = &all_vehicles[i];
             current_goal = current_car->route.points[current_car->goal_index];
 
-            
+            /* check for goal */
+            if (u_distance(current_car->position, v_from_point(*current_goal)) <= POINT_RADIUS)
+            {
+                /* if it's the last goal */
+                if (on_last_goal(current_car))
+                {
+                    /* car go die and gets replaced. */
+                    current_car->init = 0;
+                    total_vehicle_age += current_car->age;
+                }
+                else if (current_goal->light == green)
+                {
+                    /* otherwise, set next goal to current goal */
+                    current_goal->visits++;
+                    current_car->goal_index++;
+                }
+            }
+
             calculate_car_position(i, all_vehicles, &upcoming_positions[i]);
             current_car->age++;
 
@@ -87,24 +107,6 @@ void s_run_simulation(Config config)
             current_goal = current_car->route.points[current_car->goal_index];
 
             current_car->position = upcoming_positions[i];
-
-            if (u_distance_sqr(current_car->position, v_from_point(*current_goal)) < 16)
-            {
-                current_goal->visits++;
-
-                /* if it's the last goal */
-                if (on_last_goal(current_car))
-                {
-                    /* car go die and gets replaced. */
-                    current_car->init = 0;
-                    total_vehicle_age += current_car->age;
-                }
-                else
-                {
-                    /* otherwise, set next goal to current goal */
-                    current_car->goal_index++;
-                }
-            }
         }
     }
 
@@ -152,8 +154,7 @@ utiny_i need_more_cars(uint curr_veh, uint total_veh,
 /* internal helper function for sim */
 void calculate_car_position(uint index, Car *all_cars, Vector *output)
 {
-    uint i;
-    double dist_to_goal;
+    int i, valid;
     Car *car = &all_cars[index];
     Point *current_goal = car->route.points[car->goal_index];
 
@@ -164,22 +165,56 @@ void calculate_car_position(uint index, Car *all_cars, Vector *output)
     Vector direction = v_new_vector(dx, dy);
     Vector normalized = v_normalize(direction);
 
-    /* new car position found */
-    Vector car_new_position = v_scale(normalized, car->speed);
+    Vector car_delta_position;
+    Vector next_position;
 
-    /* assign new position to car */
-    Vector new_position = v_add(car->position, car_new_position);
+    /* printf("------------\n");
+    u_print_car(*car); */
+    for (i = 1; i <= COL_DET; i++)
+    {
+        car_delta_position = v_scale(normalized, (float)car->speed * (i) / COL_DET);
+        next_position = v_add(car->position, car_delta_position);
 
-    /* check if upcoming traffic light is green */
+        valid = is_valid_position(index, &next_position, all_cars);
+
+        /* printf("checking pos: %d ", valid);
+        u_print_vector(&next_position); */
+
+        if (!valid)
+        {
+            i--;
+            break;
+        }
+    }
+
+    if (i == 0)
+    {
+        current_goal->wait_points++;
+        *output = car->position;
+    }
+    else
+    {
+        *output = next_position;
+    }
+}
+
+utiny_i is_valid_position(uint index, Vector *pos, Car *all_cars)
+{
+    Car *car = &all_cars[index];
+    Vector next_position;
+    Point *current_goal = car->route.points[car->goal_index];
+    double dist_to_goal;
+    int i;
+
     if (car->goal_index == 1)
     {
-        dist_to_goal = u_distance(car->position, v_from_point(*current_goal));
+        dist_to_goal = u_distance(*pos, v_from_point(*current_goal));
 
         /* if light is red, and sufficiently close, stop */
 
-        if (current_goal->light == red && dist_to_goal < 100)
+        if (current_goal->light == red && dist_to_goal <= POINT_RADIUS)
         {
-            new_position = car->position;
+            return 0;
         }
     }
 
@@ -193,19 +228,13 @@ void calculate_car_position(uint index, Car *all_cars, Vector *output)
             continue;
         }
 
-        if (u_distance_sqr(new_position, all_cars[i].position) < u_configs.car_collision_detection_radius)
+        if (u_distance_sqr(next_position, all_cars[i].position) < u_configs.car_collision_detection_radius)
         {
-            new_position = car->position;
+            return 0;
             break;
         }
     }
-
-    if (new_position.x == car->position.x && new_position.y == car->position.y)
-    {
-        current_goal->wait_points++;
-    }
-
-    *output = new_position;
+    return 1;
 }
 
 /* Counts and returns amount of alive cars. */

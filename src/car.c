@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include "../libs/utility.h"
 #include "../libs/routes.h"
 #include "../libs/colours.h"
@@ -11,6 +12,9 @@
 
 int main(int argc, char **argv)
 {
+    int msec;
+    clock_t start, diff;
+
     srand(time(NULL));
     /*WIP.*/
 
@@ -26,7 +30,13 @@ int main(int argc, char **argv)
         u_load_configs(".config", &u_configs);
     }
 
+    /* timing */
+    start = clock();
     s_run_simulation(u_configs);
+    diff = clock() - start;
+    msec = diff * 1000 / CLOCKS_PER_SEC;
+
+    c_printf("Time taken %d seconds %d milliseconds\n", GRN ,msec/1000, msec%1000);
 
     u_compile_output(".output", argv[1]);
 

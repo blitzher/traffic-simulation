@@ -1,6 +1,6 @@
 # setup variables
 CC = gcc
-CFLAGS = -ansi -pedantic -Wall
+CFLAGS = -ansi -pedantic -Wall -O1
 COMP = $(CC) $(CFLAGS)
 LIB = libs
 TEMP = temp
@@ -53,3 +53,4 @@ clean : clear $(BIN)/car.exe
 # compile and run main
 run : $(BIN)/car.exe
 	@./$(BIN)/car.exe
+	

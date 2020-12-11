@@ -11,6 +11,7 @@
 #define TOTAL_POINTS 12
 #define TOTAL_ROUTES 12
 #define MAX_ROUTE_LEN 4
+#define POINT_RADIUS 7 /* 7 because it is half of the speed of the car */
 
 /* a route is primarily
  * an array of points */

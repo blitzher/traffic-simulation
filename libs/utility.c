@@ -67,6 +67,7 @@ void u_print_car(Car c)
 {
     printf("Position:\n");
     u_print_vector(&c.position);
+    printf("Current goal index: %d\n", c.goal_index);
     printf("Current goal:\n");
     u_print_point(c.route.points[c.goal_index]);
 }
