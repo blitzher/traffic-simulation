@@ -126,8 +126,6 @@ void r_generate_routes()
     south_to_west.points[2] = r_all_points[3];
     south_to_west.points[3] = r_all_points[2];
 
-    printf("assembled plain routes...\n");
-
     /* generate routes heading to north */
     r_north_bound_routes[0] = south_to_north;
     r_north_bound_routes[1] = east_to_north;
@@ -147,7 +145,11 @@ void r_generate_routes()
     r_west_bound_routes[0] = north_to_west; /*Cannot drive here*/
     r_west_bound_routes[1] = south_to_west;
     r_west_bound_routes[2] = east_to_west;
-    printf("assembled routes...\n");
+
+    if (DEBUG)
+    {
+        printf("assembled routes...\n");
+    }
 }
 
 Route r_random_route()
@@ -161,7 +163,7 @@ Route r_random_route()
     }
 
     i -= u_configs.traffic_from_north;
-    
+
     /* traffic from south*/
     if (i <= u_configs.traffic_from_south)
     {

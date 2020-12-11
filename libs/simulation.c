@@ -27,7 +27,7 @@ void s_run_simulation(Config config)
     uint cars_spawned = 0;
     Car *all_vehicles = (Car *)malloc(sizeof(Car) * MAX_VEHICLES);
 
-    u_print_configs(config);
+    if (DEBUG) { u_print_configs(config); }
     printf("\nrunning simulation...\n\n");
 
     /* make into function for refinement? */
@@ -129,7 +129,7 @@ void s_run_simulation(Config config)
 utiny_i on_last_goal(Car *c)
 {
     utiny_i i;
-    utiny_i last_goal_index;
+    utiny_i last_goal_index = 5;
 
     for (i = 0; i < MAX_ROUTE_LEN; i++)
     {

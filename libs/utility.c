@@ -246,7 +246,10 @@ int u_load_configs(char *file_name, Config *out)
             }
             else
             {
-                printf("unaccounted config: %s\n", name);
+                if (DEBUG)
+                {
+                    printf("unaccounted config: %s\n", name);
+                }
             }
         }
     }
@@ -261,32 +264,32 @@ int u_compile_output(char *output_file, char *config_name)
     uint i;
     FILE *fp;
     Point *point;
-    char line[80];
+    char line[160];
 
     fp = fopen(output_file, "w");
-    sprintf(line, "%s\n", config_name);
+    sprintf(line, "config name: %s\n", config_name);
     fputs(line, fp);
     /* iterate over all points */
     for (i = 0; i < TOTAL_POINTS; i++)
     {
         point = r_point_by_index(i);
-        sprintf(line, "point:%2d <x:%3d, y:%3d - visits:%5d, wait_points:%5d>\n",
+        sprintf(line, "point:%2d <x:%3d, y:%3d - visits:%5d, iterations waited:%5d>\n",
                 i, point->x, point->y, point->visits, point->wait_points);
         total_visit += point->visits;
         total_wait_points += point->wait_points;
         fputs(line, fp);
     }
-    sprintf(line, "Amount of cars        :%5d\n", u_configs.car_total_amount);
+    sprintf(line, "\n# Total amount of vehicles being simulated\n\tAmount of vehicles:%6d\n", u_configs.car_total_amount);
     fputs(line, fp);
-    sprintf(line, "Sum of visits         :%5u\n", total_visit);
+    sprintf(line, "\n# Total amounts of points reached by vehicles\n\tSum of visits:%6u\n", total_visit);
     fputs(line, fp);
-    sprintf(line, "Sum of waitpoints     :%5u, avg : %5f\n",
+    sprintf(line, "\n# Total seconds cars were standing still\n\tTotal wait points:%7u\n\tAverage pr second:%7.2f\n",
             total_wait_points, (float)total_wait_points / (float)u_configs.sim_duration);
     fputs(line, fp);
-    sprintf(line, "Max concurrent cars   :%5u\n", u_configs.o_conc_cars);
+    sprintf(line, "\n# Most vehicles alive at same time\n\tMax concurrent vehicles:%6u\n", u_configs.o_conc_cars);
     fputs(line, fp);
-    sprintf(line, "Average car age       :%6.2f iterations\n",
-    (float)u_configs.o_total_vehicle_age/(float)u_configs.car_total_amount);
+    sprintf(line, "\n# Average iterations of vehicle to complete its route\n\tAverage iterations for completion:%7.2f iterations\n",
+            (float)u_configs.o_total_vehicle_age / (float)u_configs.car_total_amount);
     fputs(line, fp);
     fclose(fp);
     return 1;

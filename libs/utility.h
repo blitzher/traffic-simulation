@@ -12,7 +12,7 @@ typedef unsigned char utiny_i;
 
 /* arbitrary definition of maximum amount of goals */
 #define MAX_GOALS 10
-#define DEBUG 1
+#define DEBUG 0
 
 /* abstract struct for configurations
  * to get configurations, use u_load_config

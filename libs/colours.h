@@ -1,7 +1,5 @@
 /* 
- * This is free and unencumbered software released into the public domain.
- *
- * For more information, please refer to <https://unlicense.org>
+ * Found from
  * https://gist.github.com/RabaDabaDoba/145049536f815903c79944599c6f952a
  */
 #pragma once
@@ -18,3 +16,7 @@
 #define CLR_RESET "\x1B[0m"
 
 void c_printf(const char *string, char clr[8], ...);
+/* wrap c_printf with warning colour */
+void warn(const char* string, ...);
+/* wrap c_printf with error colour */
+void error(const char* string, ...);
