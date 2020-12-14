@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <time.h>
-#include "../libs/utility.h"
-#include "../libs/routes.h"
-#include "../libs/colours.h"
-#include "../libs/simulation.h"
+#include "../include/utility.h"
+#include "../include/routes.h"
+#include "../include/colours.h"
+#include "../include/simulation.h"
 
 /* 
  * argc: argument count
