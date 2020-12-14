@@ -338,7 +338,7 @@ void sanitise_config(Config config)
           config.south_to_north +
           config.south_to_west;
 
-    if (sum != 100)
+    if (sum != 100 && config.traffic_from_south > 0)
     {
         warn("(*) traffic from south does not add up to 100%%!\n");
         throw_flag = 1;
@@ -349,7 +349,7 @@ void sanitise_config(Config config)
           config.east_to_south +
           config.east_to_west;
 
-    if (sum != 100)
+    if (sum != 100 && config.traffic_from_east > 0)
     {
         warn("(*) traffic from east does not add up to 100%%!\n");
         throw_flag = 1;
@@ -360,13 +360,14 @@ void sanitise_config(Config config)
           config.west_to_north +
           config.west_to_south;
 
-    if (sum != 100)
+    if (sum != 100 && config.traffic_from_west > 0)
     {
         warn("(*) traffic from west does not add up to 100%%!\n");
         throw_flag = 1;
     }
 
-    if (throw_flag) {
+    if (throw_flag)
+    {
         error("    one or more critical warnings are unsolved!\n");
     }
-}   
+}

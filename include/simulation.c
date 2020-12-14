@@ -28,7 +28,10 @@ void s_run_simulation(Config config)
     uint cars_spawned = 0;
     Car *all_vehicles = (Car *)malloc(sizeof(Car) * MAX_VEHICLES);
 
-    if (DEBUG) { u_print_configs(config); }
+    if (DEBUG)
+    {
+        u_print_configs(config);
+    }
     c_printf("\nrunning simulation...\n\n", YEL);
 
     /* make into function for refinement? */
@@ -80,12 +83,13 @@ void s_run_simulation(Config config)
                     /* car go die and gets replaced. */
                     current_car->init = 0;
                     total_vehicle_age += current_car->age;
+                    current_goal->visits++;
                 }
                 else if (current_goal->light == green)
                 {
                     /* otherwise, set next goal to current goal */
-                    current_goal->visits++;
                     current_car->goal_index++;
+                    current_goal->visits++;
                 }
             }
 

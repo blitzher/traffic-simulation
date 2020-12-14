@@ -2,8 +2,8 @@
 CC = gcc
 CFLAGS = -ansi -pedantic -Wall
 COMP = $(CC) $(CFLAGS)
-LIB = libs
-TEMP = temp
+LIB = include
+TEMP = lib
 BIN = bin
 SRC = src
 
@@ -35,9 +35,9 @@ $(TEMP)/%.o : $(LIB)/%.c $(LIB)/%.h
 .PRECIOUS : $(OBJS)
 
 # compile with debug flag, and run gdb
-debug : $(SRC)/car.c $(OBJS)
-	$(COMP) -g $(OBJS) $(SRC)/car.c -o $(BIN)/car_debug
-	gdb $(BIN)/car_debug
+debug : $(SRC)/main.c $(OBJS)
+	$(COMP) -g $(OBJS) $(SRC)/main.c -o $(BIN)/main_debug
+	gdb $(BIN)/main_debug
 
 # remove all items in temporary folders
 clear :
@@ -48,9 +48,9 @@ clear :
 	@echo cleared temporary files
 
 # clear, then make
-clean : clear $(BIN)/car.exe
+clean : clear $(BIN)/main.exe
 
 # compile and run main
-run : $(BIN)/car.exe
-	@./$(BIN)/car.exe
+run : $(BIN)/main.exe
+	@./$(BIN)/main.exe
 	

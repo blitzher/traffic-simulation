@@ -1,26 +1,46 @@
-/* Traffic simulation program developed by
- * Group A404 at Aalborg University
- * October to December 2020 */
-#include "../libs/routes.h"
+#include <stdio.h>
+#include <time.h>
 #include "../libs/utility.h"
+#include "../libs/routes.h"
 #include "../libs/colours.h"
+#include "../libs/simulation.h"
 
-/* #include "../libs/colours.h" */
+/* 
+ * argc: argument count
+ * argv: argument values
+ */
 
-/* the main entry point of the program */
-int main(void)
+int main(int argc, char **argv)
 {
-    srand(time(NULL));
-    /* load configs from .config file */
-    u_load_configs(".config", &u_configs);
-    u_print_configs(u_configs);
+    int msec;
+    clock_t start, diff;
 
-    /* generate points and routes */
+    srand(time(NULL));
+
     r_generate_points();
     r_generate_routes();
 
-    /* assume that the entire simulation will be run
-     * within a 100x100 grid */
-    c_printf("success!\n", GRN);
+    if (argc > 1)
+    {
+        u_load_configs(argv[1], &u_configs);
+    }
+    else
+    {
+        u_load_configs(".config", &u_configs);
+    }
+
+    /* timing */
+    start = clock();
+    s_run_simulation(u_configs);
+    diff = clock() - start;
+    msec = diff * 1000 / CLOCKS_PER_SEC;
+
+    c_printf("simulation time: %ds %dms\n", GRN, msec/1000, msec%1000);
+
+    u_compile_output(".output", argv[1]);
+
+    c_printf("simulation terminated succesfully\n", BLU);
+
+
     return 0;
 }
