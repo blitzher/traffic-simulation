@@ -293,8 +293,10 @@ int u_compile_output(char *output_file, char *config_name)
     fputs(line, fp);
     sprintf(line, "\n# Total amounts of points reached by vehicles\n\tSum of visits:%6u\n", total_visit);
     fputs(line, fp);
-    sprintf(line, "\n# Total seconds cars were standing still\n\tTotal wait points:%7u\n\tAverage pr second:%7.2f\n",
-            total_wait_points, (float)total_wait_points / (float)u_configs.sim_duration);
+    sprintf(line, "\n# Total seconds cars were standing still\n\tTotal wait points:%7u\n\tAverage pr second:%7.2f\n\tAverage pr vehicle:%7.2f\n",
+            total_wait_points,
+            (float)total_wait_points / (float)u_configs.sim_duration,
+            (float)total_wait_points / (float)u_configs.car_total_amount);
     fputs(line, fp);
     sprintf(line, "\n# Most vehicles alive at same time\n\tMax concurrent vehicles:%6u\n", u_configs.o_conc_cars);
     fputs(line, fp);
