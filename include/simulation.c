@@ -76,7 +76,7 @@ void s_run_simulation(Config config)
             current_goal = current_car->route.points[current_car->goal_index];
 
             /* check for goal */
-            if (u_distance(current_car->position, v_from_point(*current_goal)) <= POINT_RADIUS)
+            if (u_distance(current_car->position, v_from_point(*current_goal)) <= u_configs.point_radius)
             {
                 /* if it's the last goal */
                 if (on_last_goal(current_car))
@@ -217,7 +217,7 @@ utiny_i is_valid_position(uint index, Vector *pos, Car *all_cars)
 
         /* if light is red, and sufficiently close, stop */
 
-        if (current_goal->light == red && dist_to_goal <= POINT_RADIUS)
+        if (current_goal->light == red && dist_to_goal <= u_configs.point_radius)
         {
             return 0;
         }

@@ -29,6 +29,8 @@ int main(int argc, char **argv)
         u_load_configs(".config", &u_configs);
     }
 
+    u_print_configs(u_configs);
+
     /* timing */
     start = clock();
     s_run_simulation(u_configs);
