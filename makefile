@@ -41,8 +41,8 @@ debug : $(SRC)/main.c $(OBJS)
 
 # remove all items in temporary folders
 clear :
-	@rm -rf temp
-	@rm -rf bin
+	@rm -rf $(TEMP)
+	@rm -rf $(BIN)
 	@rm -f *.exe
 	@rm -f *.o
 	@echo cleared temporary files

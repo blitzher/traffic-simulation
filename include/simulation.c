@@ -4,6 +4,7 @@
 #define MAX_VEHICLES 1000
 
 #define COL_DET 4
+#define CAR_DIST_SQR 9 /* required free space between vehicles */
 
 /* internal helper function for sim */
 utiny_i on_last_goal(Car *c);
@@ -206,7 +207,6 @@ void calculate_car_position(uint index, Car *all_cars, Vector *output)
 utiny_i is_valid_position(uint index, Vector *pos, Car *all_cars)
 {
     Car *car = &all_cars[index];
-    Vector next_position;
     Point *current_goal = car->route.points[car->goal_index];
     double dist_to_goal;
     int i;
@@ -234,7 +234,7 @@ utiny_i is_valid_position(uint index, Vector *pos, Car *all_cars)
         }
 
         /* here we explicitly use distance squared for performance reasons */
-        if (u_distance_sqr(next_position, all_cars[i].position) < u_configs.point_radius_sqr)
+        if (u_distance_sqr(*pos, all_cars[i].position) < CAR_DIST_SQR)
         {
             return 0;
             break;
