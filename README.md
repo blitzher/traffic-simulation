@@ -23,7 +23,7 @@ This should produce a new folder, called `bin`, where the binary executable shou
 If you wish to run the test configuration, use `make run`, which will produce a `.output` file in the main directory.
 This output file, like all, will look something like
 
-[Sample output](img/output.png)
+![Sample output](img/output.png)
 
 The configuration used for the `make run` rule is defined in `/traffic-simulation/.config` and can freely be modified. Each configuration is accompanied by a comment, which explains the implementation of the comment.
 
