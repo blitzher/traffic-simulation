@@ -52,7 +52,7 @@ void s_run_simulation(Config config)
 
             for (i = 0; i < MAX_VEHICLES; i++)
             {
-                if (all_vehicles[i].init == 0)
+                if (all_vehicles[i].init == 1)
                 {
                     all_vehicles[i] = u_new_car(goals);
                     cars_spawned++;
