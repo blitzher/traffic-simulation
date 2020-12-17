@@ -276,7 +276,7 @@ int u_compile_output(char *output_file, char *config_name)
     sprintf(line, "config name: %s\n", config_name);
     fputs(line, fp);
 
-    sprintf(line, "\npositions of points:\n\t\t0 1\n\n\t2   3 4   5\n\t6   7 8   9\n\n\t   10 11\n\n");
+    sprintf(line, "\npositions of points:\n\t    0 1\n\n\t2   3 4   5\n\t6   7 8   9\n\n\t   10 11\n\n");
     fputs(line, fp);
 
     /* iterate over all points */
