@@ -27,6 +27,17 @@ This output file, like all, will look something like
 
 The configuration used for the `make run` rule is defined in `/traffic-simulation/.config` and can freely be modified. Each configuration is accompanied by a comment, which explains the implementation of the comment.
 
+### Running our configurations
+If you wish to run our configurations, and have compiled the executable, use
+
+```bin\main.exe configs\med_pb.config```
+
+and
+
+```bin\main.exe configs\uden_pb.config``` 
+
+and review the output files as desired.
+
 #### Debug
 To change to debug mode, open `/include/utility.h` and change the symbolic constant `#define DEBUG 0` to `#define DEBUG 1`. This will allow for some more information to be printed to `stdout`, and whenever you add more debugging comments, they should be wrapped in `if (DEBUG) { /* print data */ }`.
 
