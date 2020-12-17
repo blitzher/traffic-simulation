@@ -79,8 +79,6 @@ typedef struct Car
     Route route;
     utiny_i goal_index;
     double speed;
-    double desired_speed;
-    double reaction_time;
     ushort age;
 
     /* wether or not the car has been
@@ -121,7 +119,7 @@ void u_print_vector(Vector *);
 void u_print_configs(Config);
 /* compile information from point variables into
  * an output file  */
-int u_compile_output(char *output_file, char* config_name);
+int u_compile_output(char *output_file, char *config_name);
 
 /* Print function for vector */
 void u_print_crossproduct(Vector, Vector);
