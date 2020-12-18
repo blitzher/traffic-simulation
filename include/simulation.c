@@ -1,6 +1,8 @@
 #include "simulation.h"
 #include "string.h"
 #include "colours.h"
+#include <stdio.h>
+#include <stdlib.h>
 #define MAX_VEHICLES 1000
 
 #define COL_DET 4
@@ -25,6 +27,9 @@ void s_run_simulation(Config config)
     Car *current_car;
     Point *current_goal;
     Vector *upcoming_positions = (Vector *)malloc(sizeof(Vector) * MAX_VEHICLES);
+
+    char line[80];
+    FILE *fp = fopen(".visuals", "w");   
 
     uint cars_spawned = 0;
     Car *all_vehicles = (Car *)malloc(sizeof(Car) * MAX_VEHICLES);
@@ -65,7 +70,6 @@ void s_run_simulation(Config config)
          * where it should go */
         for (i = 0; i < MAX_VEHICLES; i++)
         {
-
             /* if car is dead, go to next car */
             if (all_vehicles[i].init != 1)
             {
@@ -74,6 +78,9 @@ void s_run_simulation(Config config)
 
             current_car = &all_vehicles[i];
             current_goal = current_car->route.points[current_car->goal_index];
+
+            sprintf(line, "%.0f %.0f ", current_car->position.x, current_car->position.y);
+            fputs(line, fp);
 
             /* check for goal */
             if (u_distance(current_car->position, v_from_point(*current_goal)) <= u_configs.point_radius)
@@ -114,6 +121,8 @@ void s_run_simulation(Config config)
 
             current_car->position = upcoming_positions[i];
         }
+        sprintf(line, "\n");
+        fputs(line, fp);
     }
 
     u_configs.o_conc_cars = max_conc_cars;
@@ -128,6 +137,7 @@ void s_run_simulation(Config config)
     /* frees allocated memory. */
     free(all_vehicles);
     free(upcoming_positions);
+    fclose(fp);
 }
 
 /* figure out if a cars current goal 

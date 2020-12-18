@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "mainC.C": "cpp"
-    }
+    },
+    "python.linting.enabled": false
 }
