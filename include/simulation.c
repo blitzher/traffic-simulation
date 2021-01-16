@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #define MAX_VEHICLES 1000
 
-#define COL_DET 4
-#define CAR_DIST_SQR 9 /* required free space between vehicles */
+#define COL_DET 8
+#define CAR_DIST_SQR 18 /* required free space between vehicles */
 
 /* internal helper function for sim */
 utiny_i on_last_goal(Car *c);
@@ -48,6 +48,14 @@ void s_run_simulation(Config config)
         /* update the traffic lights, based on the current time */
         change_lights(time);
 
+        sprintf(line, "%u %u %u %u ", 
+                            r_all_points[3]->light,
+                            r_all_points[8]->light,
+                            r_all_points[4]->light,
+                            r_all_points[7]->light );
+        fputs(line, fp);
+
+
         max_conc_cars = count_cars(all_vehicles) > max_conc_cars ? count_cars(all_vehicles) : max_conc_cars;
 
         if (need_more_cars(cars_spawned, config.car_total_amount,
@@ -79,6 +87,7 @@ void s_run_simulation(Config config)
             current_car = &all_vehicles[i];
             current_goal = current_car->route.points[current_car->goal_index];
 
+            /* write down the current car into file */
             sprintf(line, "%.0f %.0f ", current_car->position.x, current_car->position.y);
             fputs(line, fp);
 
@@ -170,7 +179,7 @@ utiny_i need_more_cars(uint curr_veh, uint total_veh,
 /* internal helper function for sim */
 void calculate_car_position(uint index, Car *all_cars, Vector *output)
 {
-    int i, valid;
+    int i;
     Car *car = &all_cars[index];
     Point *current_goal = car->route.points[car->goal_index];
 
@@ -183,6 +192,7 @@ void calculate_car_position(uint index, Car *all_cars, Vector *output)
 
     Vector car_delta_position;
     Vector next_position;
+    Vector goal_position = v_new_vector(current_goal->x, current_goal->y);
 
     /* printf("------------\n");
     u_print_car(*car); */
@@ -191,14 +201,13 @@ void calculate_car_position(uint index, Car *all_cars, Vector *output)
         car_delta_position = v_scale(normalized, (float)car->speed * (i) / COL_DET);
         next_position = v_add(car->position, car_delta_position);
 
-        valid = is_valid_position(index, &next_position, all_cars);
-
-        /* printf("checking pos: %d ", valid);
-        u_print_vector(&next_position); */
-
-        if (!valid)
+        if (!is_valid_position(index, &next_position, all_cars))
         {
             i--;
+            break;
+        }
+
+        if (u_distance(next_position, goal_position) <= u_configs.point_radius) {
             break;
         }
     }
@@ -221,11 +230,10 @@ utiny_i is_valid_position(uint index, Vector *pos, Car *all_cars)
     double dist_to_goal;
     int i;
 
+    /* if light is red, and sufficiently close, stop */
     if (car->goal_index == 1)
     {
         dist_to_goal = u_distance(*pos, v_from_point(*current_goal));
-
-        /* if light is red, and sufficiently close, stop */
 
         if (current_goal->light == red && dist_to_goal <= u_configs.point_radius)
         {
@@ -244,10 +252,14 @@ utiny_i is_valid_position(uint index, Vector *pos, Car *all_cars)
         }
 
         /* here we explicitly use distance squared for performance reasons */
+
+        /* if (car->route.points[3]->init && u_distance_sqr(*pos, all_cars[i].position) < CAR_DIST_SQR * 1.5) {
+            return 0;
+        } */
+
         if (u_distance_sqr(*pos, all_cars[i].position) < CAR_DIST_SQR)
         {
             return 0;
-            break;
         }
     }
     return 1;
@@ -269,7 +281,8 @@ uint count_cars(Car *cars)
 
 void change_lights(uint time)
 {
-    uint light_period = u_configs.traffic_light_green + u_configs.traffic_light_red;
+    static uint yellow = 3;
+    uint light_period = (u_configs.traffic_light_green + u_configs.traffic_light_red) + (2 * yellow);
     uint point_in_period = time % light_period;
 
     /* light #3 and #8 */
@@ -280,11 +293,18 @@ void change_lights(uint time)
         r_all_points[4]->light = 0;
         r_all_points[7]->light = 0;
     }
-    else
+    else if ( point_in_period > u_configs.traffic_light_green + yellow && 
+              point_in_period < light_period - yellow)
     {
         r_all_points[3]->light = 0;
         r_all_points[8]->light = 0;
         r_all_points[4]->light = 1;
         r_all_points[7]->light = 1;
+    }
+    else {
+        r_all_points[3]->light = 0;
+        r_all_points[8]->light = 0;
+        r_all_points[4]->light = 0;
+        r_all_points[7]->light = 0;
     }
 }

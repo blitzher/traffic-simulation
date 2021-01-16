@@ -39,9 +39,9 @@ typedef struct Config
     utiny_i west_to_south;
     utiny_i west_to_east;
     utiny_i west_to_north;
-
-    utiny_i traffic_light_green;
-    utiny_i traffic_light_red;
+    /* max 255, 285 % 255 = 30 */
+    uint traffic_light_green;
+    uint traffic_light_red;
 
     int sim_duration;
 
