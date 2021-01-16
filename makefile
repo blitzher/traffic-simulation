@@ -45,6 +45,8 @@ clear :
 	@rm -rf $(BIN)
 	@rm -f *.exe
 	@rm -f *.o
+	@rm -f .output
+	@rm -f .visuals
 	@echo cleared temporary files
 
 # clear, then make
