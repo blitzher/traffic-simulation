@@ -53,7 +53,7 @@ Mkfile.old
 dkms.conf
 bin/
 temp/
-
+.vscode/
 
 # Compiled main with no filetype
 main
