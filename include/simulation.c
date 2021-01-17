@@ -19,7 +19,7 @@ void change_lights(uint);
 
 void s_run_simulation(Config config)
 {
-    uint time, i;
+    uint time, i, j;
     uint max_conc_cars = 0;
     uint total_vehicle_age = 0;
     Route goals;
@@ -67,12 +67,20 @@ void s_run_simulation(Config config)
             {
                 if (all_vehicles[i].init != 1)
                 {
+
+                    for (j = 0; j < MAX_VEHICLES; j++) {
+                        if (u_distance_sqr(v_from_point((*goals.points)[0]), all_vehicles[j].position) < CAR_DIST_SQR) {
+                            goto end_spawn;
+                        }
+                    }
+
                     all_vehicles[i] = u_new_car(goals);
                     cars_spawned++;
                     break;
                 }
             }
         }
+        end_spawn:;
 
         /* For every car in the simulation, find out
          * where it should go */
