@@ -35,7 +35,7 @@ Point *u_new_point(utiny_i x, utiny_i y)
     p->y = y;
     p->wait_points = 0;
     p->visits = 0;
-
+    p->light = -1;
     /* has been properly initialised */
     p->init = 1;
     return p;

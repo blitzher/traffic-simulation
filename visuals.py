@@ -13,7 +13,7 @@ GRN = (0, 255, 0)
 
 VEHIC = (100, 100, 200)
 
-VEH_RAD = 10
+VEH_RAD = ((18)**0.5)*4
 
 
 def scale(v, a, b, c, d):
@@ -21,8 +21,11 @@ def scale(v, a, b, c, d):
     out_prog = inp_prog * (d - c) + c
     return out_prog
 
+def scale_2d(v, a, b, c, d):
+    return (scale(v[0],a,b,c,d), (scale(v[1],a,b,c,d)))
+
 class Visual:
-    def __init__(self, size=(400, 400)):
+    def __init__(self, size=(800, 800)):
         if (type(size) != tuple):
             raise TypeError("size must be tuple")
 
@@ -58,7 +61,7 @@ class Visual:
                 self.frames.append(frame)
 
     def draw_lanes(self):
-        lane_width = 50
+        lane_width = 100
 
         horiz_center = self.size[0] / 2
         verti_center = self.size[1] / 2
@@ -82,6 +85,9 @@ class Visual:
         east_west = self.frames[frame_index][1][0]
         ew_clr = GRN if east_west else RED
         
+
+
+
         pg.draw.circle(self.screen, ns_clr ,(140, 130), VEH_RAD )
         pg.draw.circle(self.screen, ns_clr ,(260, 270), VEH_RAD )
 
@@ -137,10 +143,20 @@ class Visual:
             self.current_frame = 0
             self.going = False
 
+        elif (key == pg.K_UP):
+            self.current_frame = min(len(self.frames)-1, self.current_frame + 10)
+            self.going = False
+
+        elif (key == pg.K_DOWN and self.current_frame > 0):
+            self.current_frame = max(0, self.current_frame - 10)
+            self.going = False
+
         elif (key == pg.K_RIGHT and self.current_frame < len(self.frames)):
             self.current_frame += 1
+            self.going = False
         elif (key == pg.K_LEFT and self.current_frame > 0):
             self.current_frame -= 1
+            self.going = False
 
     def handle_button_up(self, key):
         pass

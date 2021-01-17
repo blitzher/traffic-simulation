@@ -3,9 +3,11 @@
 #include "colours.h"
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_VEHICLES 1000
 
-#define COL_DET 8
+
+#define MAX_VEHICLES 1000
+#define YELLOW 9
+#define COL_DET 4
 #define CAR_DIST_SQR 18 /* required free space between vehicles */
 
 /* internal helper function for sim */
@@ -237,6 +239,10 @@ utiny_i is_valid_position(uint index, Vector *pos, Car *all_cars)
     Point *current_goal = car->route.points[car->goal_index];
     double dist_to_goal;
     int i;
+    
+    if (on_last_goal(car) || (car->goal_index >= 2 && !on_last_goal(car))) {
+        return 1;
+    }
 
     /* if light is red, and sufficiently close, stop */
     if (car->goal_index == 1)
@@ -260,10 +266,6 @@ utiny_i is_valid_position(uint index, Vector *pos, Car *all_cars)
         }
 
         /* here we explicitly use distance squared for performance reasons */
-
-        /* if (car->route.points[3]->init && u_distance_sqr(*pos, all_cars[i].position) < CAR_DIST_SQR * 1.5) {
-            return 0;
-        } */
 
         if (u_distance_sqr(*pos, all_cars[i].position) < CAR_DIST_SQR)
         {
@@ -289,8 +291,8 @@ uint count_cars(Car *cars)
 
 void change_lights(uint time)
 {
-    static uint yellow = 3;
-    uint light_period = (u_configs.traffic_light_green + u_configs.traffic_light_red) + (2 * yellow);
+    
+    uint light_period = (u_configs.traffic_light_green + u_configs.traffic_light_red) + (2 * YELLOW);
     uint point_in_period = time % light_period;
 
     /* light #3 and #8 */
@@ -301,8 +303,8 @@ void change_lights(uint time)
         r_all_points[4]->light = 0;
         r_all_points[7]->light = 0;
     }
-    else if ( point_in_period > u_configs.traffic_light_green + yellow && 
-              point_in_period < light_period - yellow)
+    else if ( point_in_period > u_configs.traffic_light_green + YELLOW && 
+              point_in_period < light_period - YELLOW)
     {
         r_all_points[3]->light = 0;
         r_all_points[8]->light = 0;

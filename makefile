@@ -37,7 +37,7 @@ $(TEMP)/%.o : $(LIB)/%.c $(LIB)/%.h
 # compile with debug flag, and run gdb
 debug : $(SRC)/main.c $(OBJS)
 	$(COMP) -g $(OBJS) $(SRC)/main.c -o $(BIN)/main_debug
-	gdb $(BIN)/main_debug
+	
 
 # remove all items in temporary folders
 clear :

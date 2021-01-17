@@ -54,6 +54,7 @@ dkms.conf
 bin/
 temp/
 
+
 # Compiled main with no filetype
 main
 main_debug
