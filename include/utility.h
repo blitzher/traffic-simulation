@@ -40,8 +40,8 @@ typedef struct Config
     utiny_i west_to_east;
     utiny_i west_to_north;
 
-    utiny_i traffic_light_green;
-    utiny_i traffic_light_red;
+    short traffic_light_green;
+    short traffic_light_red;
 
     int sim_duration;
 
